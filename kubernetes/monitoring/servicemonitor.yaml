@@ -1,0 +1,13 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: cloudplusai-backend
+  namespace: cloudplusai
+spec:
+  selector:
+    matchLabels:
+      app: cloudplusai-backend
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
