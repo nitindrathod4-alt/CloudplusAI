@@ -21,6 +21,13 @@ spec:
           env:
             - name: MONGODB_URI
               value: mongodb://cloudplusai-mongodb:27017/cloudplusai
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
           readinessProbe:
             httpGet:
               path: /api/v1/health
