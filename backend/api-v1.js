@@ -3,6 +3,9 @@ const crypto = require("crypto");
 // Mount with: app.use("/api/v1", require("./api-v1")({ ApiKey, Conversation, Message, Usage, mongoose, axios, env: process.env }));
 module.exports = ({ ApiKey, Conversation, Message, Usage, mongoose, axios, env }) => {
   const router = require("express").Router();
+  const rateBuckets = new Map();
+  const WINDOW_MS = 60 * 1000;
+  const MAX_REQUESTS_PER_MINUTE = Number(env.API_RATE_LIMIT_PER_MINUTE || 30);
 
   async function developerAuth(req, res, next) {
     const header = req.headers.authorization || "";
@@ -14,15 +17,40 @@ module.exports = ({ ApiKey, Conversation, Message, Usage, mongoose, axios, env }
     key.lastUsedAt = new Date();
     await key.save();
     req.apiKey = key;
+    req.rawApiKey = raw;
+    next();
+  }
+
+  function rateLimit(req, res, next) {
+    const now = Date.now();
+    const id = req.apiKey._id.toString();
+    const bucket = rateBuckets.get(id);
+    if (!bucket || now - bucket.startedAt >= WINDOW_MS) {
+      rateBuckets.set(id, { startedAt: now, count: 1 });
+      res.set("X-RateLimit-Limit", String(MAX_REQUESTS_PER_MINUTE));
+      res.set("X-RateLimit-Remaining", String(Math.max(0, MAX_REQUESTS_PER_MINUTE - 1)));
+      return next();
+    }
+    if (bucket.count >= MAX_REQUESTS_PER_MINUTE) {
+      const retryAfter = Math.max(1, Math.ceil((WINDOW_MS - (now - bucket.startedAt)) / 1000));
+      res.set("X-RateLimit-Limit", String(MAX_REQUESTS_PER_MINUTE));
+      res.set("X-RateLimit-Remaining", "0");
+      res.set("Retry-After", String(retryAfter));
+      return res.status(429).json({ error: { message: "Rate limit exceeded. Please retry later." } });
+    }
+    bucket.count += 1;
+    res.set("X-RateLimit-Limit", String(MAX_REQUESTS_PER_MINUTE));
+    res.set("X-RateLimit-Remaining", String(Math.max(0, MAX_REQUESTS_PER_MINUTE - bucket.count)));
     next();
   }
 
   router.get("/health", (req, res) => res.json({ object: "health", status: "ok" }));
 
-  router.post("/chat", developerAuth, async (req, res) => {
+  router.post("/chat", developerAuth, rateLimit, async (req, res) => {
     try {
       const message = String(req.body.message || "").trim();
       if (!message) return res.status(400).json({ error: { message: "message is required." } });
+      if (message.length > 10000) return res.status(400).json({ error: { message: "message must be 10,000 characters or less." } });
       if (!env.GROQ_API_KEY) return res.status(503).json({ error: { message: "AI provider is not configured." } });
 
       const response = await axios.post("https://api.groq.com/openai/v1/chat/completions", {
