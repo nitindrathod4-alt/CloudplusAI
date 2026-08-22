@@ -6,6 +6,116 @@
 
 > CloudplusAI combines an AI application and developer API with a real DevOps/IaC stack. The repository contains application code, containerization, CI/CD, Kubernetes/Helm manifests, Terraform AWS infrastructure, security scanning and monitoring configuration.
 
+## 🖥️ Digital UI & System Flow
+
+### 🎛️ Platform UI
+
+```text
+┌─────────────────────────────────────────────────────────────────────┐
+│                         CLOUDPLUSAI                                  │
+├───────────────┬─────────────────────────────────────────────────────┤
+│  🏠 Dashboard │  📊 Overview                                        │
+│  💬 AI Chat   │  ┌──────────┐ ┌──────────┐ ┌──────────┐             │
+│  🔑 API Keys  │  │ Requests │ │  Tokens  │ │  Errors  │             │
+│  📚 API Docs  │  └──────────┘ └──────────┘ └──────────┘             │
+│  📈 Analytics │                                                     │
+│  ⚙️ Settings  │  Recent Activity     API Usage      System Health   │
+│               │  ───────────────     ─────────     ───────────────   │
+│               │  ✓ API request       ████████      ● Backend Online  │
+│               │  ✓ AI response      ██████        ● Database Online │
+│               │  ✓ API key created  ████          ● Cluster Healthy │
+└───────────────┴─────────────────────────────────────────────────────┘
+```
+
+### 🔁 User → Application Flow
+
+```text
+┌──────────────┐
+│ 👤 User      │
+└──────┬───────┘
+       │ Login / Chat / API Request
+       ▼
+┌──────────────────┐
+│ 🖥️ CloudplusAI UI│
+└────────┬─────────┘
+         ▼
+┌──────────────────┐
+│ 🔐 Auth / API Key│
+└────────┬─────────┘
+         ▼
+┌──────────────────┐
+│ 🛡️ Rate Limiter  │
+│ Request Validation│
+└────────┬─────────┘
+         ▼
+┌──────────────────┐
+│ ⚙️ Express API   │
+└───────┬─────┬────┘
+        │     │
+        ▼     ▼
+   ┌────────┐ ┌─────────────┐
+   │MongoDB │ │ 🤖 AI Model │
+   └────────┘ └─────────────┘
+        │          │
+        └────┬─────┘
+             ▼
+       📊 Analytics
+```
+
+### 🚀 DevOps Digital Flow
+
+```text
+┌──────────┐    ┌──────────┐    ┌────────────────┐
+│ Developer│───▶│  GitHub  │───▶│ GitHub Actions │
+└──────────┘    └──────────┘    └───────┬────────┘
+                                        │
+                         ┌──────────────┼──────────────┐
+                         ▼              ▼              ▼
+                    🧪 Tests       🔍 SonarQube    🛡️ Trivy
+                         │              │              │
+                         └──────────────┼──────────────┘
+                                        ▼
+                                  🐳 Docker Build
+                                        │
+                                        ▼
+                                  📦 Amazon ECR
+                                        │
+                                        ▼
+                              ☸️ Amazon EKS Cluster
+                                        │
+                              ┌─────────┴─────────┐
+                              ▼                   ▼
+                         Nginx/Ingress         Helm
+                              │                   │
+                              └─────────┬─────────┘
+                                        ▼
+                              ☁️ CloudplusAI App
+                                        │
+                         ┌──────────────┼──────────────┐
+                         ▼              ▼              ▼
+                    Prometheus       Grafana       CloudWatch
+```
+
+### 📈 Monitoring Flow
+
+```text
+Application / Pods
+       │
+       ▼
+   /metrics
+       │
+       ▼
+┌──────────────┐
+│ Prometheus   │──────▶ Alerts / Metrics
+└──────┬───────┘
+       ▼
+┌──────────────┐
+│   Grafana    │──────▶ 📊 Dashboards
+└──────────────┘
+
+AWS Resources ───────────────▶ ☁️ CloudWatch
+```
+
 ## 🚀 Overview
 
 CloudplusAI is designed as a developer-focused AI platform where users can authenticate, chat with AI, persist conversations, manage API keys and inspect usage. The same project demonstrates an end-to-end DevOps lifecycle: source control, automated CI/CD, Docker, AWS infrastructure as code, Kubernetes, Helm, security scanning and observability.
