@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudplusAI</title>
+  <style>
+    body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#1e3c72,#2a5298);color:white;text-align:center;padding-top:90px}
+    .box{width:min(420px,90%);margin:auto;padding:30px;border-radius:16px;background:rgba(255,255,255,.12);box-shadow:0 0 20px rgba(0,0,0,.3)}
+    input{width:85%;padding:12px;border-radius:10px;border:none;outline:none;font-size:16px}
+    button{margin-top:16px;padding:12px 24px;border:none;border-radius:10px;background:orange;color:white;cursor:pointer;font-size:16px;font-weight:bold}
+    #response{margin-top:22px;background:white;color:black;padding:16px;border-radius:10px;min-height:30px;text-align:left;white-space:pre-wrap}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>CloudplusAI</h1>
+    <input type="text" id="question" placeholder="Ask AI anything...">
+    <br>
+    <button onclick="askAI()">Ask AI</button>
+    <div id="response">AI answer will appear here...</div>
+  </div>
+  <script>
+    async function askAI(){
+      const question=document.getElementById('question').value;
+      const responseBox=document.getElementById('response');
+      if(!question.trim()){responseBox.textContent='Please type a question.';return;}
+      responseBox.textContent='Thinking...';
+      try{
+        const res=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:question})});
+        const data=await res.json();
+        responseBox.textContent=data.reply||'No reply from AI';
+      }catch(error){console.error(error);responseBox.textContent='Error connecting AI';}
+    }
+  </script>
+</body>
+</html>
