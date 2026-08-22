@@ -3,34 +3,113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CloudplusAI</title>
+  <meta name="description" content="CloudplusAI — an AI assistant for cloud, DevOps and everyday questions.">
+  <title>CloudplusAI — AI Assistant</title>
   <style>
-    body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#1e3c72,#2a5298);color:white;text-align:center;padding-top:90px}
-    .box{width:min(420px,90%);margin:auto;padding:30px;border-radius:16px;background:rgba(255,255,255,.12);box-shadow:0 0 20px rgba(0,0,0,.3)}
-    input{width:85%;padding:12px;border-radius:10px;border:none;outline:none;font-size:16px}
-    button{margin-top:16px;padding:12px 24px;border:none;border-radius:10px;background:orange;color:white;cursor:pointer;font-size:16px;font-weight:bold}
-    #response{margin-top:22px;background:white;color:black;padding:16px;border-radius:10px;min-height:30px;text-align:left;white-space:pre-wrap}
+    :root{--bg:#050816;--panel:rgba(15,23,42,.78);--panel2:rgba(30,41,59,.62);--line:rgba(148,163,184,.18);--text:#f8fafc;--muted:#94a3b8;--accent:#67e8f9;--accent2:#818cf8;--success:#34d399}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);background:radial-gradient(circle at 15% 15%,rgba(99,102,241,.24),transparent 30%),radial-gradient(circle at 85% 20%,rgba(34,211,238,.16),transparent 28%),linear-gradient(145deg,#020617,#0b1120 55%,#111827);overflow-x:hidden}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,black,transparent 80%)}
+    .shell{width:min(1080px,calc(100% - 32px));margin:auto}
+    header{padding:22px 0;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:850;letter-spacing:.2px}
+    .logo{width:40px;height:40px;border:1px solid rgba(103,232,249,.45);border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(103,232,249,.18),rgba(129,140,248,.18));box-shadow:0 0 28px rgba(103,232,249,.13);font-size:20px}
+    .brand span{background:linear-gradient(90deg,#fff,var(--accent),#a5b4fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .badge{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px;border:1px solid var(--line);padding:8px 11px;border-radius:999px;background:rgba(15,23,42,.5)}
+    .live{width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 12px var(--success)}
+    main{padding:58px 0 70px}
+    .hero{text-align:center;max-width:820px;margin:0 auto 32px}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;color:#a5b4fc;border:1px solid rgba(129,140,248,.28);background:rgba(99,102,241,.08);padding:8px 13px;border-radius:999px;font-size:12px;font-weight:750;letter-spacing:1.2px;text-transform:uppercase}
+    h1{font-size:clamp(44px,8vw,78px);line-height:.98;letter-spacing:-3px;margin:20px 0 18px;background:linear-gradient(90deg,#fff 15%,#a5f3fc 52%,#a5b4fc 88%);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero p{margin:auto;max-width:650px;color:var(--muted);font-size:17px;line-height:1.7}
+    .app{margin:38px auto 0;max-width:850px;border:1px solid var(--line);border-radius:28px;background:linear-gradient(145deg,rgba(15,23,42,.88),rgba(2,6,23,.82));box-shadow:0 30px 100px rgba(0,0,0,.42),0 0 70px rgba(99,102,241,.09);padding:12px;backdrop-filter:blur(18px)}
+    .bar{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 14px;color:var(--muted);font-size:12px}
+    .dots{display:flex;gap:5px}.dots i{width:7px;height:7px;border-radius:50%;background:#475569}
+    .chat{min-height:390px;border:1px solid var(--line);border-radius:20px;background:rgba(2,6,23,.62);padding:26px;display:flex;flex-direction:column;justify-content:center}
+    .welcome{max-width:620px;margin:auto;text-align:center}.orb{width:64px;height:64px;margin:0 auto 18px;border-radius:20px;display:grid;place-items:center;font-size:30px;background:linear-gradient(145deg,rgba(103,232,249,.18),rgba(129,140,248,.2));border:1px solid rgba(103,232,249,.25);box-shadow:0 0 45px rgba(103,232,249,.1)}
+    .welcome h2{margin:0 0 9px;font-size:24px}.welcome p{margin:0;color:var(--muted);line-height:1.6;font-size:14px}
+    .suggestions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:22px}.suggestions button{font:inherit;color:#cbd5e1;background:rgba(30,41,59,.6);border:1px solid var(--line);padding:9px 12px;border-radius:10px;cursor:pointer;transition:.2s}.suggestions button:hover{border-color:rgba(103,232,249,.4);color:white;transform:translateY(-1px)}
+    .composer{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:14px}.input-wrap{display:flex;align-items:center;border:1px solid var(--line);background:rgba(15,23,42,.8);border-radius:15px;padding:0 15px;transition:.2s}.input-wrap:focus-within{border-color:rgba(103,232,249,.55);box-shadow:0 0 0 4px rgba(103,232,249,.06)}
+    input{width:100%;padding:16px 8px;background:transparent;border:0;outline:0;color:white;font:inherit;font-size:15px}input::placeholder{color:#64748b}
+    .send{border:0;border-radius:15px;padding:0 22px;background:linear-gradient(135deg,#06b6d4,#6366f1);color:white;font-weight:800;cursor:pointer;box-shadow:0 10px 30px rgba(99,102,241,.2);transition:.2s}.send:hover{transform:translateY(-1px);filter:brightness(1.08)}.send:disabled{opacity:.6;cursor:not-allowed;transform:none}
+    #response{display:none;margin-top:16px;text-align:left;white-space:pre-wrap;line-height:1.7;color:#dbeafe;background:rgba(15,23,42,.76);border:1px solid var(--line);border-radius:15px;padding:17px}.error{color:#fca5a5!important}
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.feature{padding:18px;border:1px solid var(--line);border-radius:18px;background:rgba(15,23,42,.48)}.icon{font-size:20px}.feature strong{display:block;margin:9px 0 5px}.feature p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+    footer{padding:20px 0 35px;text-align:center;color:#64748b;font-size:12px}
+    @media(max-width:700px){.shell{width:min(100% - 20px,1080px)}header{padding:16px 0}.badge{display:none}main{padding-top:35px}h1{letter-spacing:-2px}.chat{padding:18px;min-height:360px}.features{grid-template-columns:1fr}.composer{grid-template-columns:1fr}.send{height:50px}.suggestions button{font-size:12px}}
   </style>
 </head>
 <body>
-  <div class="box">
-    <h1>CloudplusAI</h1>
-    <input type="text" id="question" placeholder="Ask AI anything...">
-    <br>
-    <button onclick="askAI()">Ask AI</button>
-    <div id="response">AI answer will appear here...</div>
+  <div class="shell">
+    <header>
+      <div class="brand"><div class="logo">✦</div><span>CloudplusAI</span></div>
+      <div class="badge"><i class="live"></i> AI assistant online</div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow">☁️ Cloud-powered AI assistant</div>
+        <h1>Ask. Learn. Build.</h1>
+        <p>Get fast, clear answers for cloud, DevOps, technology, interviews and everyday questions — powered by the CloudplusAI backend.</p>
+
+        <div class="app">
+          <div class="bar"><span>CloudplusAI Assistant</span><div class="dots"><i></i><i></i><i></i></div></div>
+          <div class="chat">
+            <div class="welcome" id="welcome">
+              <div class="orb">✦</div>
+              <h2>What can I help you build?</h2>
+              <p>Ask a question below and CloudplusAI will generate an answer for you.</p>
+              <div class="suggestions">
+                <button type="button" onclick="usePrompt('Explain AWS EC2 simply')">Explain AWS EC2</button>
+                <button type="button" onclick="usePrompt('What is Kubernetes?')">What is Kubernetes?</button>
+                <button type="button" onclick="usePrompt('Give me a DevOps interview question')">DevOps interview</button>
+              </div>
+            </div>
+            <div id="response"></div>
+          </div>
+          <form class="composer" onsubmit="askAI(event)">
+            <div class="input-wrap"><input type="text" id="question" autocomplete="off" placeholder="Ask CloudplusAI anything..." aria-label="Question"></div>
+            <button class="send" id="sendBtn" type="submit">Ask AI&nbsp; ↗</button>
+          </form>
+        </div>
+
+        <div class="features">
+          <div class="feature"><span class="icon">⚡</span><strong>Fast answers</strong><p>Simple, focused responses designed for quick learning and problem solving.</p></div>
+          <div class="feature"><span class="icon">☁️</span><strong>Cloud & DevOps</strong><p>Ask about AWS, Docker, Kubernetes, Linux, CI/CD and more.</p></div>
+          <div class="feature"><span class="icon">🔒</span><strong>Secure backend</strong><p>Your AI provider key stays on the backend instead of being exposed in the browser.</p></div>
+        </div>
+      </section>
+    </main>
+    <footer>CloudplusAI · AI + Cloud + DevOps Engineering Project</footer>
   </div>
+
   <script>
-    async function askAI(){
-      const question=document.getElementById('question').value;
-      const responseBox=document.getElementById('response');
-      if(!question.trim()){responseBox.textContent='Please type a question.';return;}
-      responseBox.textContent='Thinking...';
+    const input = document.getElementById('question');
+    const responseBox = document.getElementById('response');
+    const welcome = document.getElementById('welcome');
+    const sendBtn = document.getElementById('sendBtn');
+
+    function usePrompt(text){ input.value=text; input.focus(); }
+
+    async function askAI(event){
+      if(event) event.preventDefault();
+      const question=input.value.trim();
+      if(!question){input.focus();return;}
+      welcome.style.display='none';
+      responseBox.style.display='block';
+      responseBox.classList.remove('error');
+      responseBox.textContent='Thinking…';
+      sendBtn.disabled=true;
       try{
         const res=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:question})});
         const data=await res.json();
+        if(!res.ok) throw new Error(data.reply||'Request failed');
         responseBox.textContent=data.reply||'No reply from AI';
-      }catch(error){console.error(error);responseBox.textContent='Error connecting AI';}
+      }catch(error){
+        console.error(error);
+        responseBox.classList.add('error');
+        responseBox.textContent='Unable to connect to CloudplusAI right now. Please check the backend service and try again.';
+      }finally{sendBtn.disabled=false;input.focus();}
     }
   </script>
 </body>
