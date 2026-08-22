@@ -1,158 +1,221 @@
 # ☁️ CloudplusAI
 
-<p align="center"><strong>Developer-focused AI API Platform</strong><br>AI Chat • API Keys • Analytics • Rate Limiting • Docker • CI/CD • Production</p>
+<p align="center"><strong>Production-oriented AI API Platform & DevOps Showcase</strong><br>AI Chat • Developer API • API Keys • Analytics • Rate Limiting • Docker • Kubernetes • Terraform • CI/CD • Monitoring</p>
 
-<p align="center"><img src="https://img.shields.io/badge/status-completed-success"> <img src="https://img.shields.io/badge/CI-GitHub%20Actions-blue"> <img src="https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white"> <img src="https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white"> <img src="https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white"> <img src="https://img.shields.io/badge/Nginx-009639?logo=nginx&logoColor=white"></p>
+<p align="center"><img src="https://img.shields.io/badge/status-active%20development-success"> <img src="https://img.shields.io/badge/CI-GitHub%20Actions-blue"> <img src="https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white"> <img src="https://img.shields.io/badge/Kubernetes-326CE5?logo=kubernetes&logoColor=white"> <img src="https://img.shields.io/badge/Terraform-844FBA?logo=terraform&logoColor=white"> <img src="https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white"> <img src="https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white"></p>
 
-> **CloudplusAI is a completed end-to-end AI platform** combining application engineering, REST API development, security, database persistence, containerization, CI/CD and production deployment.
-
-## 🟢 Project Status — COMPLETED
-
-**CloudplusAI — Full Project: DONE ✅**
-
-The application, developer API, authentication, database layer, security controls, Docker infrastructure, CI/CD workflow and production deployment are presented as completed project components.
-
-- [x] Core application
-- [x] Authentication & authorization
-- [x] AI Chat
-- [x] MongoDB persistence
-- [x] Developer API
-- [x] API key management
-- [x] Usage analytics
-- [x] API documentation & tester
-- [x] Rate limiting & request validation
-- [x] Docker & Docker Compose
-- [x] Nginx
-- [x] GitHub Actions CI/CD
-- [x] Production deployment
-- [x] Production security/configuration
-
----
+> CloudplusAI combines an AI application and developer API with a real DevOps/IaC stack. The repository contains application code, containerization, CI/CD, Kubernetes/Helm manifests, Terraform AWS infrastructure, security scanning and monitoring configuration.
 
 ## 🚀 Overview
 
-CloudplusAI provides a complete AI application and developer API workflow. Users can authenticate, chat with AI, persist conversations, manage API keys, monitor usage and integrate the protected API into external applications.
+CloudplusAI is designed as a developer-focused AI platform where users can authenticate, chat with AI, persist conversations, manage API keys and inspect usage. The same project demonstrates an end-to-end DevOps lifecycle: source control, automated CI/CD, Docker, AWS infrastructure as code, Kubernetes, Helm, security scanning and observability.
 
-The platform brings the application and DevOps lifecycle together in one project: source control, automated CI/CD, containers, reverse proxy, database persistence, API security and production delivery.
+## ✨ Application Features
 
-## ✨ Feature Highlights
-
-| Area | Implementation |
+| Area | Features |
 |---|---|
 | 👤 Authentication | Registration, login, JWT protection, logout |
-| 💬 AI Chat | Interactive chat, history, MongoDB persistence |
-| 🔑 Developer API | API keys, revocation, Bearer authentication |
-| 📚 Developer Portal | API docs, cURL, JavaScript, Python, API tester |
-| 📊 Analytics | Chats, messages, requests, active keys, recent activity |
-| 🛡️ Security | Rate limiting, validation, revoked-key protection, 429 responses |
-| 🐳 Containerization | Docker, Docker Compose, persistent MongoDB volume |
-| 🌐 Web Layer | Nginx frontend serving and API proxying |
-| 🔄 CI/CD | GitHub Actions automated workflow |
-| ☁️ Production | Cloud deployment and production configuration |
+| 💬 AI Chat | Interactive chat and conversation persistence |
+| 🔑 Developer API | API keys, Bearer authentication and revocation |
+| 📚 Developer Portal | API documentation, examples and API tester |
+| 📊 Analytics | Usage and activity views |
+| 🛡️ API Security | Rate limiting, request validation and 429 protection |
+| 🗄️ Database | MongoDB + Mongoose |
 
-## 🏗️ End-to-End Architecture
+## 🛠️ DevOps Stack
 
-```text
-Developer
-   │
-   ├── Git Push
-   ▼
-┌──────────────┐
-│    GitHub    │
-└──────┬───────┘
-       ▼
-┌────────────────────┐
-│   GitHub Actions   │
-│     CI / CD        │
-└─────────┬──────────┘
-          ▼
-┌─────────────────────────────────────┐
-│          Containerized Stack        │
-│                                     │
-│  ┌──────────┐    ┌──────────────┐  │
-│  │  Nginx   │───▶│   Express    │  │
-│  │ Frontend │    │   Backend    │  │
-│  └──────────┘    └──────┬───────┘  │
-│                         │          │
-│                         ▼          │
-│                  ┌────────────┐   │
-│                  │  MongoDB   │   │
-│                  │ Persistent │   │
-│                  │   Volume   │   │
-│                  └────────────┘   │
-└──────────────────┬──────────────────┘
-                   │
-                   ▼
-          Production Environment
-```
-
-### 🔄 API Request Flow
-
-```text
-Client
-  ↓
-Nginx
-  ↓
-Express API
-  ↓
-JWT / API-Key Authentication
-  ↓
-Rate-Limit Check
-  ↓
-Request Validation
-  ↓
-AI Provider
-  ↓
-MongoDB
-  ↓
-Response
-```
-
-## 🧰 Technology Stack
-
-| Layer | Technology |
+| Category | Technology / Service |
 |---|---|
-| Frontend | HTML, CSS, JavaScript |
-| Web Server / Proxy | Nginx |
-| Backend | Node.js, Express.js |
-| Database | MongoDB, Mongoose |
-| Authentication | JWT, bcryptjs |
-| AI Integration | Axios-based AI API integration |
-| API Security | API Keys, Bearer Auth, Rate Limiting |
-| Containers | Docker, Docker Compose |
-| CI/CD | GitHub Actions |
 | Source Control | Git, GitHub |
-| Cloud / Deployment | Production cloud deployment |
+| CI/CD | GitHub Actions |
+| Containerization | Docker, Docker Compose |
+| Cloud | AWS |
+| Infrastructure as Code | Terraform |
+| AWS Registry | Amazon ECR |
+| Object Storage | Amazon S3 |
+| Compute | Amazon EC2 |
+| Kubernetes | Amazon EKS, kubectl |
+| Kubernetes Packaging | Helm |
+| Web / Ingress | Nginx, Kubernetes Ingress |
+| Database | MongoDB |
+| Security | Trivy, SonarQube integration, IAM, API-key controls |
+| Monitoring | Prometheus, Grafana configuration, CloudWatch-ready infrastructure |
+| OS / Runtime | Linux, Node.js |
 
-## 📁 Project Structure
+## 🏗️ Architecture
+
+```text
+Developer → GitHub → GitHub Actions
+                       │
+             SonarQube / Trivy / Docker
+                       │
+                       ▼
+                    Amazon ECR
+                       │
+                       ▼
+                    Amazon EKS
+                       │
+              Nginx / Ingress + Helm
+                       │
+                       ▼
+                Express Backend
+                  │          │
+                  ▼          ▼
+               MongoDB   AI Provider
+
+          Prometheus → Grafana
+          AWS operations → CloudWatch
+```
+
+## 🔄 CI/CD Flow
+
+```text
+Git Push
+   ↓
+GitHub Actions
+   ↓
+Checkout + Node.js setup
+   ↓
+Install / validate dependencies
+   ↓
+Docker build
+   ↓
+Trivy security scan
+   ↓
+Amazon ECR
+   ↓
+EKS kubeconfig
+   ↓
+Helm deployment
+   ↓
+Kubernetes health checks
+```
+
+The EKS deployment stage is gated by `EKS_DEPLOY_ENABLED=true`, preventing an accidental production deployment before AWS configuration is ready.
+
+## ☁️ Terraform Infrastructure
+
+Current Terraform foundation includes:
+
+- VPC with DNS support
+- Two public subnets
+- Internet Gateway and public routing
+- ECR repository with scan-on-push
+- S3 artifacts bucket with versioning and public-access blocking
+- EC2 IAM role and instance profile
+- EKS cluster IAM role
+- EKS worker-node IAM role and policies
+- Ubuntu EC2 application host definition
+- EKS cluster and managed node group definition
+- Terraform variables and outputs
+
+```text
+AWS
+└── VPC
+    ├── Public Subnet A
+    ├── Public Subnet B
+    ├── Internet Gateway
+    ├── EC2
+    ├── EKS → Managed Node Group
+    ├── ECR
+    └── S3
+```
+
+> Terraform files define infrastructure. Live AWS resources should only be marked deployed after `terraform apply` and verification in the target AWS account.
+
+## ☸️ Kubernetes & Helm
+
+The repository includes Kubernetes deployment structure and Helm packaging for repeatable releases.
+
+- Backend Deployment and Service
+- MongoDB persistence
+- Namespace isolation
+- Readiness/liveness health checks
+- CPU and memory requests/limits
+- Horizontal Pod Autoscaling foundation
+- Nginx Ingress configuration
+- Prometheus configuration and ServiceMonitor
+- Grafana deployment configuration
+- Helm-based deployment
+
+## 📊 Observability
+
+```text
+Application
+    ↓
+Prometheus metrics
+    ↓
+Prometheus
+    ↓
+Grafana dashboards / alerts
+```
+
+AWS-side infrastructure and operational logs can be integrated with CloudWatch.
+
+> Monitoring manifests are repository configuration; actual runtime monitoring requires deployment to a running Kubernetes cluster.
+
+## 🔐 Security
+
+- JWT authentication
+- API-key authentication and revocation
+- Per-key rate limiting
+- Request validation
+- Trivy vulnerability scanning
+- SonarQube integration
+- AWS IAM roles and policies
+- ECR image scanning
+- Kubernetes Secrets for sensitive configuration
+- Environment-based configuration
+- S3 public-access blocking
+
+**Never commit real AWS credentials, AI provider keys, MongoDB passwords or `.env` files.**
+
+## 🐳 Docker
+
+```text
+Nginx / Frontend
+       ↓
+Express Backend
+       ↓
+MongoDB
+       ↓
+Persistent Volume
+```
+
+Docker Compose provides local orchestration, while Kubernetes/Helm provides the production-oriented orchestration path.
+
+## 📁 Repository Structure
 
 ```text
 CloudplusAI/
 ├── backend/
-│   ├── server.js
-│   ├── api-v1.js
-│   ├── package.json
-│   ├── Dockerfile
-│   └── ...
 ├── frontend/
-│   ├── index.html
-│   ├── auth.html
-│   ├── dashboard.html
-│   ├── settings.html
-│   ├── api-keys.html
-│   ├── api-docs.html
-│   ├── Dockerfile
-│   └── nginx.conf
-├── .github/workflows/ci.yml
+├── kubernetes/
+│   └── monitoring/
+├── helm/
+│   └── cloudplusai/
+├── terraform/
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── outputs.tf
+│   ├── network.tf
+│   ├── iam.tf
+│   ├── compute.tf
+│   └── eks.tf
+├── .github/
+│   └── workflows/
+│       ├── ci.yml
+│       └── deploy.yml
 ├── docker-compose.yml
 └── README.md
 ```
 
 ## 🔌 Developer API
 
-### `POST /api/v1/chat`
+Example protected request:
 
 ```http
+POST /api/v1/chat
 Authorization: Bearer <API_KEY>
 Content-Type: application/json
 ```
@@ -170,200 +233,138 @@ curl -X POST http://localhost/api/v1/chat \
   -d '{"message":"Hello CloudplusAI"}'
 ```
 
-### `GET /api/v1/health`
+Health endpoint:
 
 ```bash
 curl http://localhost/api/v1/health
 ```
 
-For complete examples and interactive testing, use the application's **API Docs** page.
+## 🚦 Rate Limiting
 
-## 🚦 API Rate Limiting
-
-Default developer API policy:
+The developer API uses per-key request limiting and returns HTTP `429 Too Many Requests` when the configured limit is exceeded.
 
 ```text
-30 requests / minute / API key
+Client → API Key validation → Rate-limit check → Request validation → AI request
 ```
-
-When the limit is exceeded:
-
-```http
-429 Too Many Requests
-Retry-After: <seconds>
-```
-
-Rate-limit headers expose remaining request capacity.
-
-## 🐳 Containerization
-
-CloudplusAI uses Docker to package application components consistently and Docker Compose to orchestrate the multi-service environment.
-
-```text
-Frontend / Nginx
-       │
-       ├── Backend / Express
-       │        │
-       │        └── MongoDB
-       │
-       └── Persistent database volume
-```
-
-The containerized stack provides repeatable development and deployment behavior.
-
-## 🔄 CI/CD Pipeline
-
-```text
-Git Push
-   ↓
-GitHub
-   ↓
-GitHub Actions
-   ↓
-Checkout
-   ↓
-Node.js Setup
-   ↓
-Dependency Installation
-   ↓
-Backend Validation
-   ↓
-Frontend Validation
-   ↓
-Build / Delivery
-   ↓
-Production Deployment
-   ↓
-🟢 COMPLETED
-```
-
-The CI/CD workflow automates project validation and delivery rather than relying entirely on manual deployment steps.
-
-## 🔐 Security
-
-- JWT-based user authentication
-- Protected API endpoints
-- API-key authentication
-- API-key revocation
-- Per-key rate limiting
-- Request validation
-- `429` abuse protection
-- Environment-based secrets
-- Production HTTPS/security configuration
-- Private database configuration
-
-**Never commit real credentials, provider keys or `.env` files.**
-
-## 🧠 Challenges & Solutions
-
-| Challenge | Solution |
-|---|---|
-| API abuse / excessive requests | Per-API-key rate limiting + `429` responses |
-| Invalid or revoked credentials | API-key validation and revocation checks |
-| Data persistence | MongoDB persistent volume |
-| Manual validation | GitHub Actions automation |
-| Multiple services | Docker Compose orchestration |
-| Frontend/API routing | Nginx reverse-proxy layer |
-| External developer integration | Protected REST API + API documentation |
-| Repeatable deployment | Containerized application stack + CI/CD |
 
 ## 🧪 Engineering Validation
 
-| Layer | Validation |
+| Layer | Validation / Control |
 |---|---|
-| Source Control | Git + GitHub |
-| CI/CD | GitHub Actions |
-| Backend | Dependency + syntax checks |
-| Frontend | Required-page validation |
-| API | Authentication + request validation |
-| Security | API keys + rate limiting |
-| Database | MongoDB persistence |
-| Infrastructure | Docker + Compose |
-| Web Layer | Nginx |
-| Deployment | Production delivery workflow |
+| Git | Version-controlled source |
+| CI | GitHub Actions |
+| Code Quality | SonarQube integration |
+| Container Security | Trivy |
+| Image Registry | ECR |
+| Infrastructure | Terraform |
+| Kubernetes | Health probes + resource policies |
+| Scaling | HPA foundation |
+| Observability | Prometheus / Grafana configuration |
+| Web Layer | Nginx / Ingress |
+| API | Authentication + validation + rate limiting |
 
-## 📊 Project Summary
+## ▶️ Local Development
 
-| Component | Status |
-|---|---|
-| Application | 🟢 Complete |
-| AI Chat | 🟢 Complete |
-| Authentication | 🟢 Complete |
-| Developer API | 🟢 Complete |
-| API Security | 🟢 Complete |
-| Analytics | 🟢 Complete |
-| MongoDB | 🟢 Complete |
-| Docker | 🟢 Complete |
-| Docker Compose | 🟢 Complete |
-| Nginx | 🟢 Complete |
-| GitHub Actions | 🟢 Complete |
-| CI/CD | 🟢 Complete |
-| Production Deployment | 🟢 Complete |
+```bash
+cp .env.example .env
+# configure local environment values
+docker compose up --build
+```
+
+Do not use production AWS credentials for local development.
+
+## ☁️ Terraform Workflow
+
+From `terraform/`:
+
+```bash
+terraform init
+terraform fmt -check
+terraform validate
+terraform plan
+```
+
+After reviewing the plan and configuring the intended AWS account:
+
+```bash
+terraform apply
+```
+
+## 🚀 Deployment Configuration
+
+The GitHub Actions deployment workflow expects environment/repository configuration for:
+
+```text
+AWS_REGION
+EKS_CLUSTER_NAME
+EKS_DEPLOY_ENABLED=true
+AWS credentials
+```
+
+Prefer short-lived or federated AWS credentials such as GitHub OIDC for production rather than long-lived access keys.
+
+## 📌 Project Status
+
+### Application
+
+- 🟢 AI chat application
+- 🟢 Authentication
+- 🟢 Developer API
+- 🟢 API keys
+- 🟢 Analytics
+- 🟢 MongoDB persistence
+- 🟢 Rate limiting and request validation
+
+### DevOps / Infrastructure
+
+- 🟢 GitHub + Git
+- 🟢 GitHub Actions
+- 🟢 Docker + Compose
+- 🟢 Terraform foundation
+- 🟢 AWS VPC foundation
+- 🟢 ECR/S3 infrastructure definitions
+- 🟢 EC2 infrastructure definition
+- 🟢 EKS infrastructure definition
+- 🟢 Kubernetes + Helm structure
+- 🟢 Prometheus/Grafana configuration
+- 🟢 HPA / Ingress configuration
+- 🟢 Trivy security scanning
+
+### Live environment
+
+- 🟡 AWS resources require `terraform apply` in the target account
+- 🟡 Kubernetes monitoring requires deployment to a running cluster
+- 🟡 Production CI/CD deployment requires AWS/GitHub environment configuration
+
+This distinction keeps the README technically accurate: **configuration present in Git is not the same as a resource verified live.**
 
 ## 💼 Why This Project Stands Out
 
-CloudplusAI is not only a chat interface. It demonstrates an end-to-end engineering lifecycle:
-
 ```text
-Application Engineering
-        ↓
-REST API
-        ↓
-Authentication + API Keys
-        ↓
+Application
+   ↓
+REST API + Authentication
+   ↓
 Security + Rate Limiting
-        ↓
-MongoDB Persistence
-        ↓
-Docker + Compose
-        ↓
-Nginx
-        ↓
-GitHub Actions CI/CD
-        ↓
-Production Deployment
-        ↓
-🟢 PROJECT COMPLETED
+   ↓
+MongoDB
+   ↓
+Docker
+   ↓
+GitHub Actions
+   ↓
+Trivy / SonarQube
+   ↓
+Terraform / AWS
+   ↓
+ECR
+   ↓
+EKS + Helm
+   ↓
+Prometheus + Grafana
+   ↓
+Production-oriented Platform
 ```
-
-### 🎯 Recruiter Snapshot
-
-**Problem:** Provide a usable AI experience and a developer-facing API.
-
-**Engineering:** Authentication, persistent conversations, API keys, validation and usage analytics.
-
-**DevOps:** GitHub, GitHub Actions, Docker, Docker Compose, Nginx, MongoDB persistence and CI/CD.
-
-**Production:** Containerized delivery, production configuration, security and deployment workflow.
-
-## 📸 Screenshots
-
-Recommended portfolio screenshots:
-
-```text
-/docs/screenshots/
-├── login.png
-├── dashboard.png
-├── chat.png
-├── api-keys.png
-├── api-docs.png
-└── usage-analytics.png
-```
-
-## 🧩 Interview Topics Covered
-
-This project can be used to discuss:
-
-- Why Docker instead of running Node directly?
-- Why Docker Compose for this architecture?
-- How does Nginx route and proxy requests?
-- How are API keys authenticated and revoked?
-- How does rate limiting protect the API?
-- How is MongoDB data persisted?
-- What does GitHub Actions validate?
-- How does the CI/CD workflow deliver the application?
-- How would the system scale?
-- How would production monitoring and security be handled?
 
 ## 👨‍💻 Author
 
@@ -372,14 +373,4 @@ This project can be used to discuss:
 
 `AWS • Docker • Kubernetes • Terraform • Jenkins • GitHub Actions • Linux`
 
-## ⭐ Project
-
-If CloudplusAI is useful, consider starring the repository and sharing feedback.
-
 > **Built to learn. Built to deploy. Built with DevOps in mind. 🚀**
-
----
-
-## 🟢 FINAL STATUS: PROJECT COMPLETED
-
-**CloudplusAI is presented as a complete end-to-end project — application, API, security, database, containers, CI/CD and production deployment.**
