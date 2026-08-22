@@ -1,0 +1,89 @@
+name: CloudplusAI DevOps Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: cloudplusai-backend
+
+jobs:
+  validate:
+    name: Validate + Security
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm install --no-audit --no-fund
+
+      - name: Backend syntax check
+        working-directory: backend
+        run: |
+          node --check server.js
+          test ! -f api-v1.js || node --check api-v1.js
+
+      - name: Build backend image
+        run: docker build -t $IMAGE_NAME:ci ./backend
+
+      - name: Trivy filesystem scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+
+      - name: Trivy image scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ env.IMAGE_NAME }}:ci
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+
+  sonar:
+    name: SonarQube (when configured)
+    runs-on: ubuntu-latest
+    if: ${{ secrets.SONAR_HOST_URL != '' && secrets.SONAR_TOKEN != '' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  docker-publish:
+    name: Publish to Amazon ECR (when AWS is configured)
+    runs-on: ubuntu-latest
+    needs: validate
+    if: ${{ secrets.AWS_ROLE_ARN != '' && secrets.AWS_REGION != '' && secrets.ECR_REPOSITORY != '' }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - uses: aws-actions/amazon-ecr-login@v2
+      - name: Build and push image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG ./backend
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
