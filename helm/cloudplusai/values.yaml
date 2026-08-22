@@ -1,0 +1,16 @@
+replicaCount: 2
+
+image:
+  repository: REPLACE_WITH_ECR_BACKEND_IMAGE
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 5000
+
+mongodb:
+  image: mongo:8
+  storage: 10Gi
+
+resources: {}
