@@ -1,1 +1,1512 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CloudplusAI Dashboard</title><style>*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:#050816;color:#f8fafc}button{font:inherit}.layout{display:flex;min-height:100vh}.side{width:250px;padding:22px 16px;border-right:1px solid #1e293b;background:#080d1d;display:flex;flex-direction:column}.brand{font-weight:900;font-size:20px;padding:8px 12px 28px}.brand b{color:#67e8f9}.nav{display:grid;gap:7px}.nav button{border:0;text-align:left;padding:12px 14px;border-radius:12px;background:transparent;color:#94a3b8;cursor:pointer}.nav button.active,.nav button:hover{background:#172033;color:#fff}.bottom{margin-top:auto}.main{flex:1;padding:30px;max-width:1250px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.top h1{margin:0;font-size:30px}.profile{border:1px solid #253149;background:#101827;color:#fff;padding:10px 14px;border-radius:12px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#0d1527;border:1px solid #1e293b;border-radius:18px;padding:20px}.label{color:#94a3b8;font-size:13px}.value{font-size:28px;font-weight:800;margin-top:8px}.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-top:16px}.panel{background:#0d1527;border:1px solid #1e293b;border-radius:18px;padding:22px}.panel h2{font-size:17px;margin:0 0 18px}.chat{min-height:260px;color:#64748b}.conv{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #172235}.conv:last-child{border-bottom:0}.conv strong{font-size:14px}.conv small{display:block;color:#64748b;margin-top:4px}.actions{display:grid;gap:10px}.action{padding:14px;border:1px solid #26344d;border-radius:12px;background:#111b2e;color:#cbd5e1;text-align:left;cursor:pointer}.action:hover{border-color:#67e8f9}.status{display:flex;align-items:center;gap:8px;color:#86efac;font-size:13px;margin-top:8px}.dot{width:8px;height:8px;background:#34d399;border-radius:50%}.empty{padding:70px 10px;text-align:center}.empty b{display:block;color:#cbd5e1;margin-bottom:8px}.empty span{font-size:13px}.chart{height:180px;display:flex;align-items:end;gap:8px;padding-top:15px}.bar{flex:1;background:#67e8f9;border-radius:5px 5px 0 0;min-height:8px;opacity:.7}.chartLabels{display:flex;justify-content:space-between;color:#64748b;font-size:11px;margin-top:8px}@media(max-width:900px){.side{width:190px}.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}@media(max-width:600px){.layout{display:block}.side{width:100%;border-right:0;border-bottom:1px solid #1e293b}.nav{display:flex;overflow:auto}.bottom{display:none}.main{padding:18px}.cards{grid-template-columns:1fr 1fr}.top h1{font-size:23px}}</style></head><body><div class="layout"><aside class="side"><div class="brand">✦ <b>Cloudplus</b>AI</div><div class="nav"><button class="active">⌂ Dashboard</button><button onclick="location.href='index.html'">＋ New Chat</button><button>◷ Chat History</button><button onclick="location.href='#analytics'">▣ Usage</button><button onclick="location.href='settings.html'">⚙ Settings</button><button onclick="location.href='api-keys.html'">⌘ API Keys</button><button onclick="location.href='api-docs.html'">▤ API Docs</button></div><div class="nav bottom"><button onclick="logout()">↪ Logout</button></div></aside><main class="main"><div class="top"><h1 id="greeting">Good to see you 👋</h1><div class="profile" id="profile">Account</div></div><div class="cards"><div class="card"><div class="label">Total Chats</div><div class="value" id="chats">—</div></div><div class="card"><div class="label">Messages</div><div class="value" id="messages">—</div></div><div class="card"><div class="label">API Requests</div><div class="value" id="requests">—</div></div><div class="card"><div class="label">Active API Keys</div><div class="value" id="keys">—</div></div></div><div class="grid"><section class="panel" id="analytics"><h2>API usage · last 7 days</h2><div class="chart" id="chart"></div><div class="chartLabels"><span>7d ago</span><span>Today</span></div></section><section class="panel"><h2>Quick actions</h2><div class="actions"><button class="action" onclick="location.href='index.html'">＋ Start a new AI chat</button><button class="action" onclick="location.href='api-docs.html#try'">▷ Try API</button><button class="action" onclick="location.href='api-docs.html'">▤ API Documentation</button><button class="action" onclick="location.href='api-keys.html'">⌘ Manage API keys</button></div></section></div><div class="grid"><section class="panel"><h2>Recent conversations</h2><div class="chat" id="conversationList"><div class="empty"><b>Loading conversations…</b><span>Your saved chats will appear here.</span></div></div></section><section class="panel"><h2>Usage overview</h2><p class="label">Requests</p><div class="value" id="usageRequests">—</div><p class="label" style="margin-top:18px">Last API activity</p><div id="lastRequest" class="label">—</div></section></div></main></div><script>const token=localStorage.getItem('cloudplusai_token');async function load(){if(!token){location.href='auth.html';return}const h={Authorization:'Bearer '+token};try{const [me,u,c,k]=await Promise.all([fetch('/api/me',{headers:h}),fetch('/api/usage',{headers:h}),fetch('/api/conversations',{headers:h}),fetch('/api/keys',{headers:h})]);if(!me.ok||!u.ok||!c.ok||!k.ok)throw new Error('API error');const user=await me.json(),usage=await u.json(),data=await c.json(),keys=await k.json();document.getElementById('profile').textContent=(user.user?.name||'Account')+' ▾';document.getElementById('greeting').textContent='Good to see you, '+(user.user?.name||'there')+' 👋';document.getElementById('chats').textContent=usage.chats??0;document.getElementById('messages').textContent=usage.messages??0;document.getElementById('requests').textContent=usage.usage?.requests??0;document.getElementById('keys').textContent=keys.keys?.length??0;document.getElementById('usageRequests').textContent=usage.usage?.requests??0;document.getElementById('lastRequest').textContent=usage.usage?.lastRequestAt?new Date(usage.usage.lastRequestAt).toLocaleString():'No API activity yet';const list=document.getElementById('conversationList');if(!data.conversations?.length){list.innerHTML='<div class="empty"><b>No conversations yet</b><span>Start your first AI chat.</span></div>'}else list.innerHTML=data.conversations.slice(0,8).map(x=>'<div class="conv"><div><strong>'+escapeHtml(x.title)+'</strong><small>'+new Date(x.updatedAt).toLocaleString()+'</small></div></div>').join('');const n=Math.min(Number(usage.usage?.requests)||0,100),values=Array.from({length:7},(_,i)=>Math.max(8,Math.min(100,Math.round((n/7)*(i+1))||8)));document.getElementById('chart').innerHTML=values.map(v=>'<div class="bar" style="height:'+v+'%"></div>').join('')}catch(e){console.error(e);localStorage.removeItem('cloudplusai_token');location.href='auth.html'}}function escapeHtml(s){return String(s).replace(/[&<>\'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}function logout(){localStorage.removeItem('cloudplusai_token');location.href='auth.html'}load();</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CloudplusAI — AI Workspace</title>
+
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{font-family:Inter,system-ui,sans-serif;background:#050816;color:#f8fafc}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+
+.app{height:100vh;display:grid;grid-template-columns:245px 1fr}
+
+.sidebar{
+ background:#080d1d;border-right:1px solid #1e293b;
+ padding:18px 14px;display:flex;flex-direction:column;
+ overflow:hidden
+}
+.brand{font-size:21px;font-weight:900;padding:8px 10px 22px}
+.brand b{color:#67e8f9}
+
+.nav{display:grid;gap:5px}
+.nav button{
+ border:0;background:transparent;color:#94a3b8;
+ text-align:left;padding:11px 12px;border-radius:10px
+}
+.nav button:hover,.nav button.active{background:#172033;color:#fff}
+.nav button.active{border-left:3px solid #67e8f9}
+
+.sideBottom{margin-top:auto}
+
+.main{min-width:0;height:100vh;display:flex;flex-direction:column}
+
+.top{
+ height:64px;flex:none;border-bottom:1px solid #1e293b;
+ display:flex;align-items:center;justify-content:space-between;
+ padding:0 22px;background:#070c19
+}
+.topTitle{font-weight:800;font-size:18px}
+.user{
+ border:1px solid #26344d;background:#101827;
+ padding:8px 13px;border-radius:10px;color:#cbd5e1
+}
+
+ .content{
+ flex:1;min-height:0;overflow:hidden;padding:12px
+}
+
+.view{height:100%;display:none}
+.view.active{display:block}
+
+ .dashboard{
+ height:100%;display:grid;
+ grid-template-rows:auto minmax(0,1fr);gap:10px
+}
+
+ .cards{
+ display:grid;grid-template-columns:repeat(4,1fr);gap:10px
+}
+.cards .card{padding:11px}
+.cards .value{font-size:21px}
+.card{
+ background:#0d1527;border:1px solid #1e293b;
+ border-radius:15px;padding:15px
+}
+.label{font-size:12px;color:#64748b}
+.value{font-size:25px;font-weight:850;margin-top:5px}
+
+ .dashboardGrid{
+ min-height:0;height:100%;display:grid;
+ grid-template-columns:1.45fr 1fr;gap:10px
+}
+
+ .panel{
+ background:#0d1527;border:1px solid #1e293b;
+ border-radius:14px;padding:13px;min-height:0;overflow:hidden
+}
+.panel h2{font-size:15px;margin:0 0 12px}
+
+.quickGrid{
+ display:grid;grid-template-columns:repeat(2,1fr);gap:9px
+}
+ .quick{
+ border:1px solid #26344d;background:#101827;color:#cbd5e1;
+ padding:10px;border-radius:10px;text-align:left;font-size:12px
+}
+.quick:hover{border-color:#67e8f9}
+
+.list{overflow:auto;height:calc(100% - 30px)}
+.item{
+ padding:11px;border-bottom:1px solid #172235;
+ cursor:pointer
+}
+.item:hover{background:#111b2e}
+.item strong{font-size:13px}
+.item small{display:block;color:#64748b;margin-top:3px}
+
+.workspace{
+ height:100%;display:grid;grid-template-rows:auto 1fr auto;
+ background:#080e1c;border:1px solid #1e293b;border-radius:16px;
+ overflow:hidden
+}
+
+.workspaceHead{
+ padding:13px 16px;border-bottom:1px solid #1e293b;
+ display:flex;align-items:center;justify-content:space-between
+}
+
+.model{
+ background:#101827;color:#fff;border:1px solid #26344d;
+ border-radius:9px;padding:8px
+}
+
+.messages{
+ min-height:0;overflow:auto;padding:20px
+}
+
+.msg{
+ max-width:78%;padding:12px 15px;border-radius:14px;
+ margin-bottom:12px;white-space:pre-wrap;line-height:1.5
+}
+.msg.user{margin-left:auto;background:#164e63}
+.msg.ai{background:#111827;border:1px solid #26344d}
+
+.composer{
+ border-top:1px solid #1e293b;padding:12px;
+ display:flex;gap:9px
+}
+.composer textarea{
+ flex:1;resize:none;height:52px;
+ background:#070d1b;color:#fff;border:1px solid #26344d;
+ border-radius:11px;padding:13px;outline:none
+}
+.send{
+ width:52px;border:0;border-radius:11px;
+ background:#67e8f9;color:#06111a;font-weight:900
+}
+
+ .featureGrid{
+ height:100%;display:grid;
+ grid-template-columns:repeat(4,1fr);gap:10px;
+ overflow:hidden;padding-right:2px
+}
+
+ .feature{
+ background:#0d1527;border:1px solid #1e293b;
+ border-radius:13px;padding:12px;min-height:0
+}
+.feature:hover{border-color:#67e8f9}
+.featureIcon{font-size:26px}
+.feature h3{margin:10px 0 5px;font-size:15px}
+.feature p{margin:0;color:#64748b;font-size:12px;line-height:1.5}
+
+.toolPanel{
+ height:100%;background:#0d1527;
+ border:1px solid #1e293b;border-radius:16px;padding:18px;
+ overflow:auto
+}
+.toolPanel h2{margin:0 0 15px;font-size:18px}
+.field{
+ width:100%;padding:11px;background:#070d1b;
+ border:1px solid #26344d;color:#fff;border-radius:10px;
+ margin:6px 0 12px
+}
+.primary{
+ border:0;background:#67e8f9;color:#06111a;
+ padding:10px 16px;border-radius:10px;font-weight:800
+}
+.result{
+ margin-top:14px;background:#070d1b;border:1px solid #26344d;
+ border-radius:11px;padding:14px;min-height:90px;
+ white-space:pre-wrap;color:#cbd5e1
+}
+
+.status{color:#86efac;font-size:12px}
+
+@media(max-width:950px){
+ .app{grid-template-columns:205px 1fr}
+ .cards{grid-template-columns:repeat(2,1fr)}
+ .dashboardGrid{grid-template-columns:1fr}
+ .featureGrid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:650px){
+ .app{grid-template-columns:1fr}
+ .sidebar{display:none}
+ .cards{grid-template-columns:repeat(2,1fr)}
+ .featureGrid{grid-template-columns:repeat(2,1fr)}
+ .content{padding:10px}
+}
+</style>
+
+<style id="CLOUDPLUS-FINAL-SIZE">
+html,body{
+  margin:0!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden!important;
+}
+
+.layout{
+  width:100%!important;
+  height:100vh!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+
+/* Sidebar smaller so every item fits */
+.side{
+  width:210px!important;
+  min-width:210px!important;
+  height:100vh!important;
+  min-height:0!important;
+  padding:8px!important;
+  overflow:hidden!important;
+}
+
+.side .brand{
+  font-size:16px!important;
+  padding:2px 8px 3px!important;
+}
+
+.side .nav{
+  gap:0!important;
+  margin:0!important;
+}
+
+.side .nav button{
+  height:23px!important;
+  min-height:23px!important;
+  padding:1px 8px!important;
+  margin:0!important;
+  font-size:12px!important;
+  line-height:15px!important;
+  white-space:nowrap!important;
+}
+
+.side .bottom{
+  margin-top:auto!important;
+}
+
+/* Main area slightly smaller too */
+.main{
+  height:100vh!important;
+  min-height:0!important;
+  padding:9px 13px!important;
+  overflow:hidden!important;
+}
+
+.top{
+  margin-bottom:6px!important;
+}
+
+.top h1{
+  font-size:20px!important;
+}
+
+.profile{
+  padding:6px 10px!important;
+  font-size:12px!important;
+}
+
+.cards{
+  gap:6px!important;
+}
+
+.cards .card{
+  padding:8px!important;
+}
+
+.cards .value{
+  font-size:18px!important;
+}
+
+.grid{
+  gap:6px!important;
+  margin-top:6px!important;
+}
+
+.panel{
+  padding:9px!important;
+}
+
+.panel h2{
+  font-size:13px!important;
+  margin-bottom:6px!important;
+}
+
+.action{
+  padding:6px!important;
+  font-size:11px!important;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="NR-IMAGE-LOGO">
+.brand{
+  display:flex!important;
+  align-items:center!important;
+  gap:9px!important;
+}
+.nr-logo{
+  width:42px!important;
+  height:42px!important;
+  object-fit:contain!important;
+  border-radius:50%!important;
+  flex:none!important;
+}
+.brand-info{min-width:0}
+.brand-name{
+  font-size:18px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.brand-name b{color:#67e8f9}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+<div class="brand">
+  <div class="nr-logo">
+    <span class="nr-n">N</span>
+    <span class="nr-r">R</span>
+    <span class="nr-cloud">☁</span>
+  </div>
+  <div class="brand-info">
+    <div class="brand-name"><b>Cloudplus</b>AI</div>
+    <div class="brand-by">Built & Developed by Nitin Rathod</div>
+  </div>
+</div>
+
+<div class="nav">
+
+<button class="active" onclick="show('dashboard',this)">⌂ Dashboard</button>
+<button onclick="show('chat',this)">💬 AI Chat</button>
+<button onclick="show('features',this)">🚀 AI Hub</button>
+<button onclick="show('search',this)">🔎 Search</button>
+<button onclick="show('memory',this)">🧠 Memory</button>
+<button onclick="show('documents',this)">📎 Documents</button>
+<button onclick="show('code',this)">🧑‍💻 Code Mode</button>
+<button onclick="show('web',this)">🌐 Web Search</button>
+<button onclick="show('playground',this)">🧪 API Playground</button>
+<button onclick="show('analytics',this)">📊 Analytics</button>
+<button onclick="show('api',this)">🔑 API</button>
+<button onclick="show('settings',this)">⚙ Settings</button>
+
+</div>
+
+<div class="nav sideBottom">
+<button onclick="logout()">↪ Logout</button>
+</div>
+
+</aside>
+
+<main class="main">
+
+<header class="top">
+<div class="topTitle" id="pageTitle">Dashboard</div>
+<div class="user" id="userName">Account</div>
+</header>
+
+<div class="content">
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="view active">
+
+<div class="dashboard">
+
+<div class="cards">
+
+<div class="card">
+<div class="label">Total Chats</div>
+<div class="value" id="statChats">—</div>
+</div>
+
+<div class="card">
+<div class="label">Messages</div>
+<div class="value" id="statMessages">—</div>
+</div>
+
+<div class="card">
+<div class="label">API Requests</div>
+<div class="value" id="statRequests">—</div>
+</div>
+
+<div class="card">
+<div class="label">API Keys</div>
+<div class="value" id="statKeys">—</div>
+</div>
+
+</div>
+
+<div class="dashboardGrid">
+
+<div class="panel">
+<h2>⚡ Quick Actions</h2>
+
+<div class="quickGrid">
+
+<button class="quick" onclick="show('chat')">💬 New AI Chat</button>
+<button class="quick" onclick="show('documents')">📎 Upload Document</button>
+<button class="quick" onclick="show('code')">🧑‍💻 Code Assistant</button>
+<button class="quick" onclick="show('web')">🌐 Web Search</button>
+<button class="quick" onclick="show('playground')">🧪 API Playground</button>
+<button class="quick" onclick="show('analytics')">📊 View Analytics</button>
+
+</div>
+
+<div style="margin-top:18px">
+<h2>System</h2>
+<div class="status">● CloudplusAI backend connected</div>
+<div class="label" style="margin-top:8px">MongoDB persistent storage enabled</div>
+</div>
+
+</div>
+
+<div class="panel">
+
+<h2>🕘 Recent Conversations</h2>
+
+<div id="recentChats" class="list">
+<div class="label">Loading...</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CHAT -->
+
+<section id="chat" class="view">
+
+<div class="workspace">
+
+<div class="workspaceHead">
+<strong>💬 CloudplusAI</strong>
+
+<select id="model" class="model">
+<option value="openai/gpt-oss-20b">GPT OSS 20B</option>
+<option value="openai/gpt-oss-120b">GPT OSS 120B</option>
+<option value="qwen/qwen3-32b">Qwen 3.6 27B</option>
+</select>
+
+</div>
+
+<div id="messages" class="messages">
+
+<div class="msg ai">
+Hello 👋 I'm CloudplusAI. How can I help you?
+</div>
+
+</div>
+
+<div class="composer">
+
+<textarea id="prompt"
+placeholder="Ask CloudplusAI anything..."></textarea>
+
+<button class="send" onclick="sendChat()">➤</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- FEATURES -->
+
+<section id="features" class="view">
+
+<div class="featureGrid">
+
+<div class="feature" onclick="show('chat')">
+<div class="featureIcon">💬</div>
+<h3>AI Chat</h3>
+<p>Multiple conversations and persistent history.</p>
+</div>
+
+<div class="feature" onclick="show('search')">
+<div class="featureIcon">🔎</div>
+<h3>Chat Search</h3>
+<p>Search conversations quickly.</p>
+</div>
+
+<div class="feature" onclick="show('memory')">
+<div class="featureIcon">🧠</div>
+<h3>Conversation Memory</h3>
+<p>Keep useful context across conversations.</p>
+</div>
+
+<div class="feature" onclick="show('documents')">
+<div class="featureIcon">📎</div>
+<h3>Documents</h3>
+<p>Document Q&A workspace.</p>
+</div>
+
+<div class="feature" onclick="show('code')">
+<div class="featureIcon">🧑‍💻</div>
+<h3>Code Mode</h3>
+<p>Generate and explain code.</p>
+</div>
+
+<div class="feature" onclick="show('web')">
+<div class="featureIcon">🌐</div>
+<h3>Web Search</h3>
+<p>Search-enabled AI workflow.</p>
+</div>
+
+<div class="feature">
+<div class="featureIcon">🎙️</div>
+<h3>Voice Input</h3>
+<p>Voice interface foundation.</p>
+</div>
+
+<div class="feature">
+<div class="featureIcon">🔊</div>
+<h3>Text to Speech</h3>
+<p>Listen to AI responses.</p>
+</div>
+
+<div class="feature" onclick="show('analytics')">
+<div class="featureIcon">📊</div>
+<h3>Analytics</h3>
+<p>Usage and activity analytics.</p>
+</div>
+
+<div class="feature" onclick="show('api')">
+<div class="featureIcon">🔑</div>
+<h3>API Management</h3>
+<p>Manage developer API keys.</p>
+</div>
+
+<div class="feature" onclick="show('playground')">
+<div class="featureIcon">🧪</div>
+<h3>API Playground</h3>
+<p>Test CloudplusAI APIs.</p>
+</div>
+
+<div class="feature" onclick="show('settings')">
+<div class="featureIcon">⚙️</div>
+<h3>Settings</h3>
+<p>Profile and workspace settings.</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SEARCH -->
+
+<section id="search" class="view">
+
+<div class="toolPanel">
+
+<h2>🔎 Search Chats</h2>
+
+<input id="searchInput" class="field"
+placeholder="Search your conversations..."
+oninput="searchChats()">
+
+<div id="searchResult" class="result">
+Type something to search.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- MEMORY -->
+
+<section id="memory" class="view">
+
+<div class="toolPanel">
+
+<h2>🧠 Conversation Memory</h2>
+
+<p class="label">
+CloudplusAI memory workspace
+</p>
+
+<textarea id="memoryText" class="field"
+style="height:180px"
+placeholder="Important context, preferences or project information..."></textarea>
+
+<button class="primary" onclick="saveMemory()">
+Save Memory
+</button>
+
+<div id="memoryResult" class="result">
+No memory saved yet.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- DOCUMENTS -->
+
+<section id="documents" class="view">
+
+<div class="toolPanel">
+
+<h2>📎 Documents & Q&A</h2>
+
+<input type="file" id="documentFile" class="field">
+
+<textarea id="documentQuestion" class="field"
+style="height:120px"
+placeholder="Ask a question about your document..."></textarea>
+
+<button class="primary"
+onclick="documentQnA()">
+Ask Document
+</button>
+
+<div id="documentResult" class="result">
+Document Q&A workspace ready.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CODE -->
+
+<section id="code" class="view">
+
+<div class="toolPanel">
+
+<h2>🧑‍💻 Code Mode</h2>
+
+<textarea id="codePrompt" class="field"
+style="height:180px"
+placeholder="Example: Create a Dockerfile for a Node.js application..."></textarea>
+
+<button class="primary" onclick="runCode()">
+Generate Code
+</button>
+
+<div id="codeResult" class="result">
+Code output will appear here.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- WEB -->
+
+<section id="web" class="view">
+
+<div class="toolPanel">
+
+<h2>🌐 Web Search Mode</h2>
+
+<input id="webQuery" class="field"
+placeholder="What do you want to search?">
+
+<button class="primary" onclick="webSearch()">
+Search
+</button>
+
+<div id="webResult" class="result">
+Web-search mode ready.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- PLAYGROUND -->
+
+<section id="playground" class="view">
+
+<div class="toolPanel">
+
+<h2>🧪 API Playground</h2>
+
+<select id="playModel" class="field">
+<option value="openai/gpt-oss-20b">GPT OSS 20B</option>
+<option value="openai/gpt-oss-120b">GPT OSS 120B</option>
+<option value="qwen/qwen3-32b">Qwen 3.6 27B</option>
+</select>
+
+<textarea id="playPrompt" class="field"
+style="height:150px"
+placeholder="Enter API prompt..."></textarea>
+
+<button class="primary" onclick="runPlayground()">
+Run
+</button>
+
+<div id="playResult" class="result">
+API response will appear here.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ANALYTICS -->
+
+<section id="analytics" class="view">
+
+<div class="toolPanel">
+
+<h2>📊 Usage Analytics</h2>
+
+<div class="cards">
+
+<div class="card">
+<div class="label">Chats</div>
+<div class="value" id="aChats">—</div>
+</div>
+
+<div class="card">
+<div class="label">Messages</div>
+<div class="value" id="aMessages">—</div>
+</div>
+
+<div class="card">
+<div class="label">Requests</div>
+<div class="value" id="aRequests">—</div>
+</div>
+
+</div>
+
+<div class="result" id="analyticsResult">
+Loading analytics...
+</div>
+
+</div>
+
+</section>
+
+
+<!-- API -->
+
+<section id="api" class="view">
+
+<div class="toolPanel">
+
+<h2>🔑 Developer API</h2>
+
+<p class="label">
+API key management and developer tools.
+</p>
+
+<div class="quickGrid" style="margin-top:15px">
+
+<button class="quick" onclick="show('playground')">
+🧪 API Playground
+</button>
+
+<button class="quick" onclick="apiKeys()">
+🔑 API Keys
+</button>
+
+<button class="quick" onclick="apiDocs()">
+📚 API Documentation
+</button>
+
+</div>
+
+<div id="apiResult" class="result">
+Developer API workspace.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section id="settings" class="view">
+
+<div class="toolPanel">
+
+<h2>⚙ Profile & Settings</h2>
+
+<div class="label">Appearance</div>
+
+<div class="quickGrid" style="margin-top:8px">
+
+<button class="quick" onclick="document.body.style.background='#050816'">
+🌙 Dark
+</button>
+
+<button class="quick" onclick="document.body.style.background='#f8fafc';document.body.style.color='#0f172a'">
+☀️ Light
+</button>
+
+</div>
+
+<div class="result" style="margin-top:18px">
+
+<strong id="settingsUser">Account</strong>
+
+<br><br>
+
+CloudplusAI personal AI workspace.
+
+<br><br>
+
+🔔 Notifications enabled<br>
+🛡️ Rate limiting active<br>
+💾 MongoDB persistence active
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+</main>
+</div>
+
+
+<script>
+
+const token =
+ localStorage.getItem("cloudplusai_token") ||
+ localStorage.getItem("token");
+
+if(!token){
+ location.href="auth.html";
+}
+
+const headers={
+ "Content-Type":"application/json",
+ "Authorization":"Bearer "+token
+};
+
+
+function show(id,btn){
+
+ document.querySelectorAll(".view")
+   .forEach(x=>x.classList.remove("active"));
+
+ const el=document.getElementById(id);
+
+ if(el)el.classList.add("active");
+
+ document.querySelectorAll(".nav button")
+   .forEach(x=>x.classList.remove("active"));
+
+ if(btn)btn.classList.add("active");
+
+ const names={
+  dashboard:"Dashboard",
+  chat:"AI Chat",
+  features:"AI Hub",
+  search:"Chat Search",
+  memory:"Conversation Memory",
+  documents:"Documents",
+  code:"Code Mode",
+  web:"Web Search",
+  playground:"API Playground",
+  analytics:"Analytics",
+  api:"Developer API",
+  settings:"Settings"
+ };
+
+ document.getElementById("pageTitle").textContent=
+   names[id]||"CloudplusAI";
+}
+
+
+async function api(url,options={}){
+
+ const r=await fetch(url,{
+  ...options,
+  headers:{
+   ...headers,
+   ...(options.headers||{})
+  }
+ });
+
+ const d=await r.json().catch(()=>({}));
+
+ if(!r.ok)
+   throw new Error(d.message||d.error?.message||"Request failed");
+
+ return d;
+}
+
+
+async function loadDashboard(){
+
+ try{
+
+  const [me,u,c,k]=await Promise.all([
+   api("/api/me"),
+   api("/api/usage"),
+   api("/api/conversations"),
+   api("/api/keys")
+  ]);
+
+  const user=me.user||me;
+
+  const name=user.name||"Account";
+
+  document.getElementById("userName").textContent=name;
+
+  document.getElementById("settingsUser").textContent=name;
+
+  const chats=u.chats||0;
+  const messages=u.messages||0;
+  const requests=u.usage?.requests||0;
+  const keys=k.keys?.length||0;
+
+  document.getElementById("statChats").textContent=chats;
+  document.getElementById("statMessages").textContent=messages;
+  document.getElementById("statRequests").textContent=requests;
+  document.getElementById("statKeys").textContent=keys;
+
+  document.getElementById("aChats").textContent=chats;
+  document.getElementById("aMessages").textContent=messages;
+  document.getElementById("aRequests").textContent=requests;
+
+  document.getElementById("analyticsResult").textContent=
+   "Total chats: "+chats+
+   "\nMessages: "+messages+
+   "\nAPI requests: "+requests+
+   "\nActive API keys: "+keys;
+
+  const list=document.getElementById("recentChats");
+
+  const conversations=c.conversations||[];
+
+  if(!conversations.length){
+
+   list.innerHTML=
+    '<div class="label">No conversations yet.</div>';
+
+  }else{
+
+   list.innerHTML=conversations
+    .slice(0,12)
+    .map(x=>`
+     <div class="item" onclick="show('chat')">
+      <strong>${escapeHtml(x.title||"New Chat")}</strong>
+      <small>${new Date(x.updatedAt).toLocaleString()}</small>
+     </div>
+    `).join("");
+
+  }
+
+ }catch(e){
+
+  console.error(e);
+
+ }
+
+}
+
+
+async function sendChat(){
+
+ const input=document.getElementById("prompt");
+
+ const text=input.value.trim();
+
+ if(!text)return;
+
+ const box=document.getElementById("messages");
+
+ box.innerHTML+=
+  '<div class="msg user">'+escapeHtml(text)+'</div>';
+
+ input.value="";
+
+ box.innerHTML+=
+  '<div class="msg ai" id="typing">Thinking...</div>';
+
+ box.scrollTop=box.scrollHeight;
+
+ try{
+
+  const d=await api("/api/ai",{
+   method:"POST",
+   body:JSON.stringify({
+    message:text,
+    model:document.getElementById("model").value
+   })
+  });
+
+  document.getElementById("typing").textContent=
+   d.reply||"No response.";
+
+ }catch(e){
+
+  document.getElementById("typing").textContent=
+   e.message;
+
+ }
+
+ box.scrollTop=box.scrollHeight;
+
+}
+
+
+async function runPlayground(){
+
+ const result=document.getElementById("playResult");
+
+ result.textContent="Running...";
+
+ try{
+
+  const d=await api("/api/playground",{
+   method:"POST",
+   body:JSON.stringify({
+    model:document.getElementById("playModel").value,
+    message:document.getElementById("playPrompt").value
+   })
+  });
+
+  result.textContent=d.reply||"No response.";
+
+ }catch(e){
+
+  result.textContent=e.message;
+
+ }
+
+}
+
+
+async function runCode(){
+
+ const prompt=document.getElementById("codePrompt").value;
+
+ const result=document.getElementById("codeResult");
+
+ result.textContent="Generating...";
+
+ try{
+
+  const d=await api("/api/playground",{
+   method:"POST",
+   body:JSON.stringify({
+    model:"openai/gpt-oss-20b",
+    message:
+     "You are an expert programmer. Return production-ready code with explanation.\n\n"+
+     prompt
+   })
+  });
+
+  result.textContent=d.reply||"No response.";
+
+ }catch(e){
+
+  result.textContent=e.message;
+
+ }
+
+}
+
+
+async function searchChats(){
+
+ const q=document.getElementById("searchInput").value.trim();
+
+ const result=document.getElementById("searchResult");
+
+ if(!q){
+
+  result.textContent="Type something to search.";
+
+  return;
+
+ }
+
+ try{
+
+  const d=await api(
+   "/api/search?q="+encodeURIComponent(q)
+  );
+
+  result.textContent=
+   JSON.stringify(d,null,2);
+
+ }catch(e){
+
+  result.textContent=e.message;
+
+ }
+
+}
+
+
+function saveMemory(){
+
+ const text=document.getElementById("memoryText").value;
+
+ localStorage.setItem(
+  "cloudplusai_memory",
+  text
+ );
+
+ document.getElementById("memoryResult").textContent=
+  text||"Memory cleared.";
+
+}
+
+
+function loadMemory(){
+
+ const x=localStorage.getItem(
+  "cloudplusai_memory"
+ );
+
+ if(x){
+
+  document.getElementById("memoryText").value=x;
+
+  document.getElementById("memoryResult").textContent=x;
+
+ }
+
+}
+
+
+async function documentQnA(){
+
+ const file=document.getElementById("documentFile").files[0];
+
+ const question=document.getElementById("documentQuestion").value;
+
+ const result=document.getElementById("documentResult");
+
+ if(!file){
+
+  result.textContent="Please select a document.";
+
+  return;
+
+ }
+
+ result.textContent=
+  "Document selected: "+file.name+
+  "\n\nDocument Q&A API can be connected here.";
+
+}
+
+
+async function webSearch(){
+
+ const q=document.getElementById("webQuery").value.trim();
+
+ const result=document.getElementById("webResult");
+
+ if(!q)return;
+
+ result.textContent="Searching...";
+
+ try{
+
+  const d=await api("/api/playground",{
+   method:"POST",
+   body:JSON.stringify({
+    model:"openai/gpt-oss-20b",
+    message:
+     "Answer this as a web-search assistant. Clearly mention when information may require live web verification.\n\n"+
+     q
+   })
+  });
+
+  result.textContent=d.reply||"No response.";
+
+ }catch(e){
+
+  result.textContent=e.message;
+
+ }
+
+}
+
+
+function apiKeys(){
+
+ document.getElementById("apiResult").textContent=
+  "API key management is available through your CloudplusAI API system.";
+
+}
+
+
+function apiDocs(){
+
+ document.getElementById("apiResult").textContent=
+  "CloudplusAI API documentation module.";
+
+}
+
+
+function logout(){
+
+ localStorage.removeItem("cloudplusai_token");
+ localStorage.removeItem("token");
+
+ location.href="auth.html";
+
+}
+
+
+function escapeHtml(s){
+
+ return String(s).replace(/[&<>"']/g,c=>({
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
+ }[c]));
+
+}
+
+
+document.getElementById("prompt")
+ .addEventListener("keydown",e=>{
+
+  if(e.key==="Enter"&&!e.shiftKey){
+
+   e.preventDefault();
+
+   sendChat();
+
+  }
+
+ });
+
+
+loadDashboard();
+loadMemory();
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+<style id="API-SIDEBAR-ONE-SCREEN">
+.side{
+  height:100vh !important;
+  max-height:100vh !important;
+  overflow:hidden !important;
+}
+
+.side .brand{
+  padding:0 8px 2px !important;
+  margin:0 !important;
+  line-height:24px !important;
+}
+
+.side .nav{
+  gap:1px !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+
+.side .nav button{
+  height:30px !important;
+  min-height:30px !important;
+  padding:2px 8px !important;
+  margin:0 !important;
+  line-height:20px !important;
+  font-size:13px !important;
+}
+
+.side .bottom{
+  margin-top:2px !important;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="SIDEBAR-FINAL">
+.side{
+  width:210px !important;
+  min-width:210px !important;
+  height:100vh !important;
+  max-height:100vh !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  box-sizing:border-box !important;
+  flex-shrink:0 !important;
+}
+
+.side::-webkit-scrollbar{
+  width:6px;
+}
+
+.side::-webkit-scrollbar-thumb{
+  background:#334155;
+  border-radius:10px;
+}
+
+.side .nav{
+  gap:0 !important;
+}
+
+.side .nav button{
+  height:24px !important;
+  min-height:24px !important;
+  padding:1px 8px !important;
+  margin:0 !important;
+  line-height:18px !important;
+  font-size:12px !important;
+}
+
+.side .bottom{
+  margin-top:6px !important;
+  padding-bottom:20px !important;
+}
+</style>
+
+<style id="DASHBOARD-HEIGHT-90">
+.side{
+  height:100vh !important;
+  max-height:100vh !important;
+}
+</style>
+
+<style id="SIDEBAR-HEIGHT-FINAL">
+.side{
+  height:100vh !important;
+  min-height:0 !important;
+  max-height:100vh !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  box-sizing:border-box !important;
+}
+
+.side .nav{
+  gap:0 !important;
+}
+
+.side .nav button{
+  height:24px !important;
+  min-height:24px !important;
+  padding:1px 8px !important;
+  margin:0 !important;
+  line-height:18px !important;
+  font-size:12px !important;
+}
+
+.side .bottom{
+  margin-top:6px !important;
+  padding-bottom:20px !important;
+}
+</style>
+
+
+<style id="REAL-SIDEBAR-HEIGHT">
+aside.sidebar{
+  height:100vh !important;
+  max-height:100vh !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  box-sizing:border-box !important;
+}
+
+aside.sidebar::-webkit-scrollbar{
+  width:6px;
+}
+
+aside.sidebar::-webkit-scrollbar-thumb{
+  background:#334155;
+  border-radius:10px;
+}
+</style>
+
+<style id="NR-BRAND-LOGO">
+.brand{
+  display:flex!important;
+  align-items:center!important;
+  gap:9px!important;
+  padding:7px 6px 14px!important;
+}
+.nr-logo{
+  position:relative;
+  width:42px;
+  height:42px;
+  min-width:42px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:radial-gradient(circle,#101d3d 0%,#050816 70%);
+  border:2px solid #22d3ee;
+  box-shadow:0 0 7px rgba(34,211,238,.8),0 0 16px rgba(37,99,235,.45);
+}
+.nr-n,.nr-r{
+  position:absolute;
+  top:7px;
+  font-size:25px;
+  line-height:28px;
+  font-weight:1000;
+  font-family:Arial,sans-serif;
+}
+.nr-n{left:7px;color:#f8fafc;z-index:2}
+.nr-r{right:6px;color:#22d3ee;z-index:3}
+.nr-cloud{
+  position:absolute;
+  right:1px;
+  top:0;
+  font-size:13px;
+  color:#67e8f9;
+  z-index:4;
+}
+.brand-info{min-width:0}
+.brand-name{
+  font-size:18px;
+  line-height:20px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.brand-name b{color:#67e8f9}
+.brand-by{
+  margin-top:3px;
+  color:#64748b;
+  font-size:8px;
+  font-weight:600;
+  white-space:nowrap;
+}
+</style>

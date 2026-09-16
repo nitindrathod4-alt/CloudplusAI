@@ -3,3 +3,14 @@ backend/.env
 .env
 npm-debug.log*
 .DS_Store
+
+# Backup files
+*.backup
+*.backup-*
+*.before-*
+*.phase1-backup
+*.phase2-backup
+
+# Specific backup files
+*.chat-backup
+*.sidebar-backup
