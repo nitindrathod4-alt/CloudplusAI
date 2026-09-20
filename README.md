@@ -154,6 +154,19 @@ Railway Backend
   └── Groq API → GPT OSS 20B
 ```
 
+## ⚡ Dynamic Live Status
+
+<!-- DYNAMIC_STATUS:START -->
+| Service | Live Status |
+|---|---|
+| 🌐 Frontend | [![Website](https://img.shields.io/website?url=https%3A%2F%2Fcloudplusai.dreamapexai.online&style=flat-square)](https://cloudplusai.dreamapexai.online) |
+| 🔄 CI | [![CI](https://img.shields.io/github/actions/workflow/status/nitindrathod4-alt/CloudplusAI/ci.yml?branch=main&style=flat-square)](https://github.com/nitindrathod4-alt/CloudplusAI/actions/workflows/ci.yml) |
+| 🤖 AI Model | `openai/gpt-oss-20b` |
+| 🕒 README Sync | Updated automatically by GitHub Actions |
+<!-- DYNAMIC_STATUS:END -->
+
+> The live-status section is refreshed automatically by GitHub Actions. GitHub badges and the website check update from the repository/live deployment rather than requiring manual README edits.
+
 ## 🚀 Overview
 
 CloudplusAI is designed as a developer-focused AI platform where users can authenticate, chat with AI, persist conversations, manage API keys and inspect usage. The same project demonstrates an end-to-end DevOps lifecycle: source control, automated CI/CD, Docker, AWS infrastructure as code, Kubernetes, Helm, security scanning and observability.
