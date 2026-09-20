@@ -9,7 +9,6 @@
   <img src="https://img.shields.io/github/repo-size/nitindrathod4-alt/CloudplusAI?style=for-the-badge" alt="Repo Size">
   <img src="https://img.shields.io/github/actions/workflow/status/nitindrathod4-alt/CloudplusAI/ci.yml?branch=main&style=for-the-badge&label=CI" alt="CI Status">
   <img src="https://img.shields.io/badge/AI-GPT%20OSS%2020B-7C3AED?style=for-the-badge" alt="AI Model">
-  <img src="https://img.shields.io/badge/Frontend-Vercel-000000?style=for-the-badge&logo=vercel" alt="Frontend Vercel">
   <img src="https://img.shields.io/badge/Backend-Railway-0B0D0E?style=for-the-badge&logo=railway" alt="Backend Railway">
 </p>
 
@@ -19,9 +18,11 @@
 
 ## 🖥️ Digital UI & System Flow
 
-### 🎛️ Platform UI
+### 🎬 Animated Master Architecture
 
-<p align="center"><img src="docs/images/platform-ui.svg" alt="CloudplusAI platform UI" width="100%"></p>
+<p align="center"><img src="docs/images/platform-ui.svg" alt="Animated CloudplusAI AWS DevOps architecture" width="100%"></p>
+
+> GitHub → Jenkins / GitHub Actions → Docker → ECR → Kubernetes/EKS → Flux CD → AWS services, with animated running lines.
 
 ### 🔁 User → Application Flow
 
@@ -29,7 +30,7 @@
 
 ### 🚀 DevOps Digital Flow
 
-<p align="center"><img src="docs/images/devops-flow.svg" alt="Animated CloudplusAI DevOps flow" width="100%"></p>
+<p align="center"><img src="docs/images/devops-flow.svg" alt="Animated CloudplusAI DevOps pipeline" width="100%"></p>
 
 ### 📈 Monitoring Flow
 
@@ -42,7 +43,6 @@
 | AI Model | GPT OSS 20B |
 | Model ID | openai/gpt-oss-20b |
 | AI Provider | Groq API |
-| Frontend | Vercel |
 | Backend | Railway |
 | Database | MongoDB Atlas |
 
@@ -51,15 +51,13 @@ The active AI model is controlled by the backend `GROQ_MODEL` environment variab
 ## 🌐 Live Production Flow
 
 ```text
-User
+👤 User
   ↓
-cloudplusai.dreamapexai.online
+🌐 CloudplusAI
   ↓
-Vercel Frontend
-  ↓ /api/*
-Railway Backend
-  ├── MongoDB Atlas
-  └── Groq API → GPT OSS 20B
+⚙️ Application API
+  ├── 🗄️ MongoDB Atlas
+  └── 🤖 Groq API → GPT OSS 20B
 ```
 
 ## ⚡ Dynamic Live Status
@@ -96,19 +94,18 @@ CloudplusAI is designed as a developer-focused AI platform where users can authe
 | Category | Technology / Service |
 |---|---|
 | Source Control | Git, GitHub |
-| CI/CD | GitHub Actions |
+| CI/CD | Jenkins, GitHub Actions |
 | Containerization | Docker, Docker Compose |
 | Cloud | AWS |
 | Infrastructure as Code | Terraform |
-| AWS Registry | Amazon ECR |
-| Object Storage | Amazon S3 |
-| Compute | Amazon EC2 |
+| AWS Services | VPC, EC2, ECR, S3, RDS, ALB, IAM, Route 53, Auto Scaling, CloudWatch |
 | Kubernetes | Amazon EKS, kubectl |
+| GitOps | Flux CD |
 | Kubernetes Packaging | Helm |
 | Web / Ingress | Nginx, Kubernetes Ingress |
 | Database | MongoDB |
-| Security | Trivy, SonarQube integration, IAM, API-key controls |
-| Monitoring | Prometheus, Grafana configuration, CloudWatch-ready infrastructure |
+| Security | Trivy, SonarQube, IAM, API-key controls |
+| Monitoring | Prometheus, Grafana, CloudWatch |
 | OS / Runtime | Linux, Node.js |
 
 ## 🏗️ Architecture
@@ -121,7 +118,7 @@ CloudplusAI is designed as a developer-focused AI platform where users can authe
 
 ## ☁️ Terraform Infrastructure
 
-<p align="center"><img src="docs/images/terraform-flow.svg" alt="Animated CloudplusAI Terraform AWS infrastructure" width="100%"></p>
+<p align="center"><img src="docs/images/terraform-flow.svg" alt="Animated CloudplusAI AWS Terraform infrastructure" width="100%"></p>
 
 ## ☸️ Kubernetes & Helm
 
@@ -345,11 +342,9 @@ Prefer short-lived or federated AWS credentials such as GitHub OIDC for producti
 ## 🚀 Live Deployment Status
 
 - 🟢 Custom domain: `cloudplusai.dreamapexai.online`
-- 🟢 Vercel frontend
 - 🟢 Railway backend
 - 🟢 MongoDB Atlas connectivity
 - 🟢 Groq AI integration with GPT OSS 20B
-- 🟢 Frontend API routing to Railway backend
 
 ## 📌 Project Status
 
@@ -388,7 +383,14 @@ This distinction keeps the README technically accurate: **configuration present 
 
 ## 💼 Why This Project Stands Out
 
-<p align="center"><img src="docs/images/devops-flow.svg" alt="Animated CloudplusAI DevOps architecture" width="100%"></p>
+- 🎬 Animated AWS + DevOps architecture
+- 🔧 Jenkins + GitHub Actions CI/CD
+- 🐳 Docker containerization
+- ☸️ Kubernetes/EKS orchestration
+- 🔄 Flux CD GitOps delivery
+- 📐 Terraform AWS infrastructure
+- 📊 Prometheus, Grafana and CloudWatch observability
+- 🔐 Trivy, SonarQube and IAM security controls
 
 ## 👨‍💻 Author
 
