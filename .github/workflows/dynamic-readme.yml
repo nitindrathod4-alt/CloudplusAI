@@ -1,0 +1,63 @@
+name: Dynamic README Status
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check live frontend
+        id: live
+        run: |
+          if curl -fsSL --max-time 20 https://cloudplusai.dreamapexai.online >/dev/null; then
+            echo "status=🟢 Online" >> "$GITHUB_OUTPUT"
+          else
+            echo "status=🔴 Check failed" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update dynamic README block
+        env:
+          LIVE_STATUS: ${{ steps.live.outputs.status }}
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from datetime import datetime, timezone
+
+          path = Path("README.md")
+          text = path.read_text(encoding="utf-8")
+
+          start = "<!-- DYNAMIC_STATUS:START -->"
+          end = "<!-- DYNAMIC_STATUS:END -->"
+
+          block = f"""<!-- DYNAMIC_STATUS:START -->
+          | Service | Live Status |
+          |---|---|
+          | 🌐 Frontend | {__import__('os').environ['LIVE_STATUS']} |
+          | 🔄 CI | [![CI](https://img.shields.io/github/actions/workflow/status/nitindrathod4-alt/CloudplusAI/ci.yml?branch=main&style=flat-square)](https://github.com/nitindrathod4-alt/CloudplusAI/actions/workflows/ci.yml) |
+          | 🤖 AI Model | `openai/gpt-oss-20b` |
+          | 🕒 Last automatic check | {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} |
+          <!-- DYNAMIC_STATUS:END -->"""
+
+          a = text.index(start)
+          b = text.index(end) + len(end)
+          path.write_text(text[:a] + block + text[b:], encoding="utf-8")
+          PY
+
+      - name: Commit README update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git diff --cached --quiet || git commit -m "chore: refresh dynamic README status"
+          git push
