@@ -40,24 +40,9 @@
 
 ### 🔁 User → Application Flow
 
-<!-- DYNAMIC_USER_FLOW:START -->
-```text
-👤 User
-   ↓
-🖥️ CloudplusAI UI
-   ↓
-🔐 Authentication / API Key
-   ↓
-🛡️ Rate Limiter + Request Validation
-   ↓
-⚙️ Express API
-   ├──→ 🗄️ MongoDB
-   ├──→ 🤖 AI Provider
-   └──→ 📊 Analytics
-<!-- DYNAMIC_USER_FLOW:END -->
-```
+<p align="center"><img src="docs/images/user-application-flow.svg" alt="Animated CloudplusAI user application flow" width="100%"></p>
 
-> This flow is generated automatically from the application routes and backend/frontend configuration.
+> 🔥 Animated flow with moving lines: User → UI → Authentication → Rate Limiter → API → MongoDB / AI / Analytics.
 
 ### 🚀 DevOps Digital Flow
 
@@ -69,23 +54,7 @@
 
 ### 📈 Monitoring Flow
 
-```text
-Application / Pods
-       │
-       ▼
-   /metrics
-       │
-       ▼
-┌──────────────┐
-│ Prometheus   │──────▶ Alerts / Metrics
-└──────┬───────┘
-       ▼
-┌──────────────┐
-│   Grafana    │──────▶ 📊 Dashboards
-└──────────────┘
-
-AWS Resources ───────────────▶ ☁️ CloudWatch
-```
+<p align="center"><img src="docs/images/monitoring-flow.svg" alt="Animated CloudplusAI monitoring flow" width="100%"></p>
 
 ## 🤖 Current AI Version
 
@@ -165,84 +134,15 @@ CloudplusAI is designed as a developer-focused AI platform where users can authe
 
 ## 🏗️ Architecture
 
-```text
-Developer → GitHub → GitHub Actions
-                       │
-             SonarQube / Trivy / Docker
-                       │
-                       ▼
-                    Amazon ECR
-                       │
-                       ▼
-                    Amazon EKS
-                       │
-              Nginx / Ingress + Helm
-                       │
-                       ▼
-                Express Backend
-                  │          │
-                  ▼          ▼
-               MongoDB   AI Provider
-
-          Prometheus → Grafana
-          AWS operations → CloudWatch
-```
+<p align="center"><img src="docs/images/architecture-flow.svg" alt="Animated CloudplusAI architecture" width="100%"></p>
 
 ## 🔄 CI/CD Flow
 
-```text
-Git Push
-   ↓
-GitHub Actions
-   ↓
-Checkout + Node.js setup
-   ↓
-Install / validate dependencies
-   ↓
-Docker build
-   ↓
-Trivy security scan
-   ↓
-Amazon ECR
-   ↓
-EKS kubeconfig
-   ↓
-Helm deployment
-   ↓
-Kubernetes health checks
-```
-
-The EKS deployment stage is gated by `EKS_DEPLOY_ENABLED=true`, preventing an accidental production deployment before AWS configuration is ready.
+<p align="center"><img src="docs/images/cicd-flow.svg" alt="Animated CloudplusAI CI/CD flow" width="100%"></p>
 
 ## ☁️ Terraform Infrastructure
 
-Current Terraform foundation includes:
-
-- VPC with DNS support
-- Two public subnets
-- Internet Gateway and public routing
-- ECR repository with scan-on-push
-- S3 artifacts bucket with versioning and public-access blocking
-- EC2 IAM role and instance profile
-- EKS cluster IAM role
-- EKS worker-node IAM role and policies
-- Ubuntu EC2 application host definition
-- EKS cluster and managed node group definition
-- Terraform variables and outputs
-
-```text
-AWS
-└── VPC
-    ├── Public Subnet A
-    ├── Public Subnet B
-    ├── Internet Gateway
-    ├── EC2
-    ├── EKS → Managed Node Group
-    ├── ECR
-    └── S3
-```
-
-> Terraform files define infrastructure. Live AWS resources should only be marked deployed after `terraform apply` and verification in the target AWS account.
+<p align="center"><img src="docs/images/terraform-flow.svg" alt="Animated CloudplusAI Terraform AWS infrastructure" width="100%"></p>
 
 ## ☸️ Kubernetes & Helm
 
@@ -261,19 +161,7 @@ The repository includes Kubernetes deployment structure and Helm packaging for r
 
 ## 📊 Observability
 
-```text
-Application
-    ↓
-Prometheus metrics
-    ↓
-Prometheus
-    ↓
-Grafana dashboards / alerts
-```
-
-AWS-side infrastructure and operational logs can be integrated with CloudWatch.
-
-> Monitoring manifests are repository configuration; actual runtime monitoring requires deployment to a running Kubernetes cluster.
+<p align="center"><img src="docs/images/observability-flow.svg" alt="Animated CloudplusAI observability flow" width="100%"></p>
 
 ## 🔐 Security
 
@@ -293,17 +181,9 @@ AWS-side infrastructure and operational logs can be integrated with CloudWatch.
 
 ## 🐳 Docker
 
-```text
-Nginx / Frontend
-       ↓
-Express Backend
-       ↓
-MongoDB
-       ↓
-Persistent Volume
-```
+<p align="center"><img src="docs/images/docker-flow.svg" alt="Animated CloudplusAI Docker flow" width="100%"></p>
 
-Docker Compose provides local orchestration, while Kubernetes/Helm provides the production-oriented orchestration path.
+> Docker Compose provides local orchestration, while Kubernetes/Helm provides the production-oriented orchestration path.
 
 ## 📁 Repository Structure
 
@@ -529,31 +409,7 @@ This distinction keeps the README technically accurate: **configuration present 
 
 ## 💼 Why This Project Stands Out
 
-```text
-Application
-   ↓
-REST API + Authentication
-   ↓
-Security + Rate Limiting
-   ↓
-MongoDB
-   ↓
-Docker
-   ↓
-GitHub Actions
-   ↓
-Trivy / SonarQube
-   ↓
-Terraform / AWS
-   ↓
-ECR
-   ↓
-EKS + Helm
-   ↓
-Prometheus + Grafana
-   ↓
-Production-oriented Platform
-```
+<p align="center"><img src="docs/images/devops-flow.svg" alt="Animated CloudplusAI DevOps architecture" width="100%"></p>
 
 ## 👨‍💻 Author
 
