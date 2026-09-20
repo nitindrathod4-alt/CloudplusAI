@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   update-readme:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -51,7 +52,25 @@ jobs:
 
           a = text.index(start)
           b = text.index(end) + len(end)
-          path.write_text(text[:a] + block + text[b:], encoding="utf-8")
+          a = text.index(start)
+          b = text.index(end) + len(end)
+          text = text[:a] + block + text[b:]
+
+          s = "<!-- DYNAMIC_STRUCTURE:START -->"
+          e = "<!-- DYNAMIC_STRUCTURE:END -->"
+          excluded = {'.git', 'node_modules', '.terraform', '.vercel'}
+          lines = ['CloudplusAI/']
+          def walk(parent, prefix=''):
+              children = sorted([p for p in parent.iterdir() if p.name not in excluded], key=lambda p: (p.is_file(), p.name.lower()))
+              for i, p in enumerate(children):
+                  last = i == len(children) - 1
+                  lines.append(prefix + ('└── ' if last else '├── ') + p.name + ('/' if p.is_dir() else ''))
+                  if p.is_dir(): walk(p, prefix + ('    ' if last else '│   '))
+          walk(Path('.'))
+          structure = s + '\n```text\n' + '\n'.join(lines) + '\n```\n' + e
+          a = text.index(s)
+          b = text.index(e) + len(e)
+          path.write_text(text[:a] + structure + text[b:], encoding='utf-8')
           PY
 
       - name: Commit README update
