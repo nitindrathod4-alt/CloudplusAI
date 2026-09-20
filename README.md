@@ -2,6 +2,8 @@
 
 <p align="center"><strong>Production-oriented AI API Platform & DevOps Showcase</strong><br>AI Chat • Developer API • API Keys • Analytics • Rate Limiting • Docker • Kubernetes • Terraform • CI/CD • Monitoring</p>
 
+<p align="center"><a href="https://cloudplusai.dreamapexai.online">🌐 Live Demo: cloudplusai.dreamapexai.online</a></p>
+
 <p align="center"><img src="https://img.shields.io/badge/status-active%20development-success"> <img src="https://img.shields.io/badge/CI-GitHub%20Actions-blue"> <img src="https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white"> <img src="https://img.shields.io/badge/Kubernetes-326CE5?logo=kubernetes&logoColor=white"> <img src="https://img.shields.io/badge/Terraform-844FBA?logo=terraform&logoColor=white"> <img src="https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white"> <img src="https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white"></p>
 
 > CloudplusAI combines an AI application and developer API with a real DevOps/IaC stack. The repository contains application code, containerization, CI/CD, Kubernetes/Helm manifests, Terraform AWS infrastructure, security scanning and monitoring configuration.
