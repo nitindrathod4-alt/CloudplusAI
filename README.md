@@ -1,8 +1,17 @@
 # ☁️ CloudplusAI
 
-<p align="center"><strong>Production-oriented AI API Platform & DevOps Showcase</strong><br>AI Chat • Developer API • API Keys • Analytics • Rate Limiting • Docker • Kubernetes • Terraform • CI/CD • Monitoring</p>
+<p align="center"><strong>Production-oriented AI Platform & DevOps Showcase</strong><br>AI Chat • Developer API • GPT OSS 20B • API Keys • Analytics • Rate Limiting • Docker • Kubernetes • Terraform • CI/CD • Monitoring</p>
 
-<p align="center"><a href="https://cloudplusai.dreamapexai.online">🌐 Live Demo: cloudplusai.dreamapexai.online</a></p>
+<p align="center"><a href="https://cloudplusai.dreamapexai.online">🌐 Live Demo</a> • <a href="https://github.com/nitindrathod4-alt/CloudplusAI">💻 GitHub Repository</a></p>
+
+<p align="center">
+  <img src="https://img.shields.io/github/last-commit/nitindrathod4-alt/CloudplusAI?style=for-the-badge" alt="Last Commit">
+  <img src="https://img.shields.io/github/repo-size/nitindrathod4-alt/CloudplusAI?style=for-the-badge" alt="Repo Size">
+  <img src="https://img.shields.io/github/actions/workflow/status/nitindrathod4-alt/CloudplusAI/ci.yml?branch=main&style=for-the-badge&label=CI" alt="CI Status">
+  <img src="https://img.shields.io/badge/AI-GPT%20OSS%2020B-7C3AED?style=for-the-badge" alt="AI Model">
+  <img src="https://img.shields.io/badge/Frontend-Vercel-000000?style=for-the-badge&logo=vercel" alt="Frontend Vercel">
+  <img src="https://img.shields.io/badge/Backend-Railway-0B0D0E?style=for-the-badge&logo=railway" alt="Backend Railway">
+</p>
 
 <p align="center"><img src="https://img.shields.io/badge/status-active%20development-success"> <img src="https://img.shields.io/badge/CI-GitHub%20Actions-blue"> <img src="https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white"> <img src="https://img.shields.io/badge/Kubernetes-326CE5?logo=kubernetes&logoColor=white"> <img src="https://img.shields.io/badge/Terraform-844FBA?logo=terraform&logoColor=white"> <img src="https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white"> <img src="https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white"></p>
 
@@ -116,6 +125,33 @@ Application / Pods
 └──────────────┘
 
 AWS Resources ───────────────▶ ☁️ CloudWatch
+```
+
+## 🤖 Current AI Version
+
+| Component | Current Configuration |
+|---|---|
+| AI Model | GPT OSS 20B |
+| Model ID | openai/gpt-oss-20b |
+| AI Provider | Groq API |
+| Frontend | Vercel |
+| Backend | Railway |
+| Database | MongoDB Atlas |
+
+The active AI model is controlled by the backend `GROQ_MODEL` environment variable, so the model can be changed without modifying the frontend.
+
+## 🌐 Live Production Flow
+
+```text
+User
+  ↓
+cloudplusai.dreamapexai.online
+  ↓
+Vercel Frontend
+  ↓ /api/*
+Railway Backend
+  ├── MongoDB Atlas
+  └── Groq API → GPT OSS 20B
 ```
 
 ## 🚀 Overview
@@ -414,6 +450,15 @@ AWS credentials
 ```
 
 Prefer short-lived or federated AWS credentials such as GitHub OIDC for production rather than long-lived access keys.
+
+## 🚀 Live Deployment Status
+
+- 🟢 Custom domain: `cloudplusai.dreamapexai.online`
+- 🟢 Vercel frontend
+- 🟢 Railway backend
+- 🟢 MongoDB Atlas connectivity
+- 🟢 Groq AI integration with GPT OSS 20B
+- 🟢 Frontend API routing to Railway backend
 
 ## 📌 Project Status
 
