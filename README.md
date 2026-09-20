@@ -159,10 +159,10 @@ Railway Backend
 <!-- DYNAMIC_STATUS:START -->
 | Service | Live Status |
 |---|---|
-| 🌐 Frontend | [![Website](https://img.shields.io/website?url=https%3A%2F%2Fcloudplusai.dreamapexai.online&style=flat-square)](https://cloudplusai.dreamapexai.online) |
+| 🌐 Frontend | 🔴 Check failed |
 | 🔄 CI | [![CI](https://img.shields.io/github/actions/workflow/status/nitindrathod4-alt/CloudplusAI/ci.yml?branch=main&style=flat-square)](https://github.com/nitindrathod4-alt/CloudplusAI/actions/workflows/ci.yml) |
 | 🤖 AI Model | `openai/gpt-oss-20b` |
-| 🕒 README Sync | Updated automatically by GitHub Actions |
+| 🕒 Last automatic check | 2026-09-20 19:44 UTC |
 <!-- DYNAMIC_STATUS:END -->
 
 > The live-status section is refreshed automatically by GitHub Actions. GitHub badges and the website check update from the repository/live deployment rather than requiring manual README edits.
