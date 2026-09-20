@@ -347,29 +347,22 @@ Docker Compose provides local orchestration, while Kubernetes/Helm provides the 
 
 ## 📁 Repository Structure
 
+<!-- DYNAMIC_STRUCTURE:START -->
 ```text
 CloudplusAI/
 ├── backend/
 ├── frontend/
 ├── kubernetes/
-│   └── monitoring/
 ├── helm/
-│   └── cloudplusai/
 ├── terraform/
-│   ├── main.tf
-│   ├── variables.tf
-│   ├── outputs.tf
-│   ├── network.tf
-│   ├── iam.tf
-│   ├── compute.tf
-│   └── eks.tf
 ├── .github/
 │   └── workflows/
-│       ├── ci.yml
-│       └── deploy.yml
 ├── docker-compose.yml
 └── README.md
 ```
+<!-- DYNAMIC_STRUCTURE:END -->
+
+> This repository tree is generated automatically from the actual GitHub repository structure. New files and folders are reflected automatically.
 
 ## 🔌 Developer API
 
