@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 520">
+<defs>
+<linearGradient id="b" x2="1" y2="1"><stop stop-color="#050816"/><stop offset="1" stop-color="#111827"/></linearGradient>
+<linearGradient id="g"><stop stop-color="#22d3ee"/><stop offset=".5" stop-color="#8b5cf6"/><stop offset="1" stop-color="#22c55e"/></linearGradient>
+<filter id="gl"><feGaussianBlur stdDeviation="4" result="x"/><feMerge><feMergeNode in="x"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<style>.t{font:700 30px Arial;fill:#fff}.n{font:700 18px Arial;fill:#fff}.s{font:13px Arial;fill:#94a3b8}.box{fill:#0b1224;stroke:#475569;stroke-width:2}.ln{fill:none;stroke:url(#g);stroke-width:5;stroke-dasharray:16 13;animation:m 1s linear infinite}.d{fill:#fff;filter:url(#gl);animation:p 1.2s infinite}@keyframes m{to{stroke-dashoffset:-58}}@keyframes p{50%{r:11;opacity:.35}}</style>
+</defs>
+<rect width="1400" height="520" rx="28" fill="url(#b)"/>
+<text x="700" y="48" text-anchor="middle" class="t">CloudplusAI • Production DevOps Architecture</text>
+<text x="700" y="76" text-anchor="middle" class="s">Continuous animated delivery path • AWS • Docker • Kubernetes • GitOps</text>
+<g>
+<rect x="55" y="145" width="180" height="82" rx="16" class="box"/><text x="145" y="180" text-anchor="middle" class="n">🐙 GitHub</text><text x="145" y="204" text-anchor="middle" class="s">Source Code</text>
+<rect x="290" y="145" width="180" height="82" rx="16" class="box"/><text x="380" y="180" text-anchor="middle" class="n">🔧 Jenkins</text><text x="380" y="204" text-anchor="middle" class="s">CI Pipeline</text>
+<rect x="525" y="145" width="190" height="82" rx="16" class="box"/><text x="620" y="180" text-anchor="middle" class="n">🚀 GitHub Actions</text><text x="620" y="204" text-anchor="middle" class="s">CI/CD Automation</text>
+<rect x="770" y="145" width="170" height="82" rx="16" class="box"/><text x="855" y="180" text-anchor="middle" class="n">🐳 Docker</text><text x="855" y="204" text-anchor="middle" class="s">Build Image</text>
+<rect x="995" y="145" width="175" height="82" rx="16" class="box"/><text x="1082" y="180" text-anchor="middle" class="n">📦 Amazon ECR</text><text x="1082" y="204" text-anchor="middle" class="s">Image Registry</text>
+<path d="M235 186H290M470 186H525M715 186H770M940 186H995" class="ln"/>
+<circle cx="260" cy="186" r="7" class="d"/><circle cx="495" cy="186" r="7" class="d"/><circle cx="742" cy="186" r="7" class="d"/><circle cx="968" cy="186" r="7" class="d"/>
+</g>
+<rect x="515" y="300" width="370" height="88" rx="18" class="box"/><text x="700" y="337" text-anchor="middle" class="n">☸️ Amazon EKS</text><text x="700" y="363" text-anchor="middle" class="s">Kubernetes • Pods • Services • Helm</text>
+<path d="M1082 227V265H700V300" class="ln"/><circle cx="900" cy="265" r="8" class="d"/>
+<rect x="1030" y="300" width="230" height="88" rx="18" class="box"/><text x="1145" y="337" text-anchor="middle" class="n">🔄 Flux CD</text><text x="1145" y="363" text-anchor="middle" class="s">GitOps Reconciliation</text>
+<path d="M1145 227V300" class="ln"/><circle cx="1145" cy="265" r="8" class="d"/>
+<g>
+<rect x="55" y="425" width="150" height="65" rx="14" class="box"/><text x="130" y="452" text-anchor="middle" class="n">🌐 VPC</text><text x="130" y="474" text-anchor="middle" class="s">Networking</text>
+<rect x="230" y="425" width="150" height="65" rx="14" class="box"/><text x="305" y="452" text-anchor="middle" class="n">☁️ EC2</text><text x="305" y="474" text-anchor="middle" class="s">Compute</text>
+<rect x="405" y="425" width="150" height="65" rx="14" class="box"/><text x="480" y="452" text-anchor="middle" class="n">🪣 S3</text><text x="480" y="474" text-anchor="middle" class="s">Storage</text>
+<rect x="580" y="425" width="150" height="65" rx="14" class="box"/><text x="655" y="452" text-anchor="middle" class="n">🗄️ RDS</text><text x="655" y="474" text-anchor="middle" class="s">Database</text>
+<rect x="755" y="425" width="150" height="65" rx="14" class="box"/><text x="830" y="452" text-anchor="middle" class="n">🔐 IAM</text><text x="830" y="474" text-anchor="middle" class="s">Security</text>
+<rect x="930" y="425" width="180" height="65" rx="14" class="box"/><text x="1020" y="452" text-anchor="middle" class="n">⚖️ ALB</text><text x="1020" y="474" text-anchor="middle" class="s">Load Balancing</text>
+<rect x="1135" y="425" width="180" height="65" rx="14" class="box"/><text x="1225" y="452" text-anchor="middle" class="n">📈 CloudWatch</text><text x="1225" y="474" text-anchor="middle" class="s">Observability</text>
+<path d="M700 388V405H130V425M700 405H305V425M700 405H480V425M700 405H655V425M700 405H830V425M700 405H1020V425M700 405H1225V425" class="ln"/>
+</g>
+</svg>
