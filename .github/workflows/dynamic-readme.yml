@@ -71,6 +71,29 @@ jobs:
           a = text.index(s)
           b = text.index(e) + len(e)
           path.write_text(text[:a] + structure + text[b:], encoding='utf-8')
+
+          # Keep the application flow synchronized with the current backend/frontend stack.
+          fs = "<!-- DYNAMIC_USER_FLOW:START -->"
+          fe = "<!-- DYNAMIC_USER_FLOW:END -->"
+          flow = """<!-- DYNAMIC_USER_FLOW:START -->
+          ```text
+          👤 User
+             ↓
+          🖥️ CloudplusAI UI
+             ↓
+          🔐 Authentication / API Key
+             ↓
+          🛡️ Rate Limiter + Request Validation
+             ↓
+          ⚙️ Express API
+             ├──→ 🗄️ MongoDB
+             ├──→ 🤖 AI Provider
+             └──→ 📊 Analytics
+          <!-- DYNAMIC_USER_FLOW:END -->"""
+          a = text.index(fs)
+          b = text.index(fe) + len(fe)
+          text = text[:a] + flow + text[b:]
+          path.write_text(text, encoding='utf-8')
           PY
 
       - name: Commit README update
