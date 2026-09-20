@@ -21,36 +21,15 @@
 
 ### 🎛️ Platform UI
 
-```text
-┌─────────────────────────────────────────────────────────────────────┐
-│                         CLOUDPLUSAI                                  │
-├───────────────┬─────────────────────────────────────────────────────┤
-│  🏠 Dashboard │  📊 Overview                                        │
-│  💬 AI Chat   │  ┌──────────┐ ┌──────────┐ ┌──────────┐             │
-│  🔑 API Keys  │  │ Requests │ │  Tokens  │ │  Errors  │             │
-│  📚 API Docs  │  └──────────┘ └──────────┘ └──────────┘             │
-│  📈 Analytics │                                                     │
-│  ⚙️ Settings  │  Recent Activity     API Usage      System Health   │
-│               │  ───────────────     ─────────     ───────────────   │
-│               │  ✓ API request       ████████      ● Backend Online  │
-│               │  ✓ AI response      ██████        ● Database Online │
-│               │  ✓ API key created  ████          ● Cluster Healthy │
-└───────────────┴─────────────────────────────────────────────────────┘
-```
+<p align="center"><img src="docs/images/platform-ui.svg" alt="CloudplusAI platform UI" width="100%"></p>
 
 ### 🔁 User → Application Flow
 
 <p align="center"><img src="docs/images/user-application-flow.svg" alt="Animated CloudplusAI user application flow" width="100%"></p>
 
-> 🔥 Animated flow with moving lines: User → UI → Authentication → Rate Limiter → API → MongoDB / AI / Analytics.
-
 ### 🚀 DevOps Digital Flow
 
-<p align="center">
-  <img src="docs/images/devops-flow.svg" alt="Animated CloudplusAI AWS DevOps flow" width="100%">
-</p>
-
-> 🔥 Animated architecture: GitHub → Jenkins / GitHub Actions → Docker → Kubernetes/EKS → Flux CD → AWS services. The flow uses moving glowing lines so it feels like a running video.
+<p align="center"><img src="docs/images/devops-flow.svg" alt="Animated CloudplusAI DevOps flow" width="100%"></p>
 
 ### 📈 Monitoring Flow
 
