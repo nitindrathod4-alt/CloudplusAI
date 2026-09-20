@@ -382,16 +382,86 @@ Monitoring configuration includes:
 CloudplusAI/
 ├── .github/
 │   └── workflows/
+│       ├── ci.yml
+│       ├── deploy.yml
+│       ├── devops.yml
+│       └── dynamic-readme.yml
 ├── backend/
+│   ├── .env.example
+│   ├── api-v1.js
+│   ├── Dockerfile
+│   ├── features.js
+│   ├── package.json
+│   └── server.js
 ├── docs/
+│   ├── images/
+│   │   ├── architecture-flow.svg
+│   │   ├── cicd-flow.svg
+│   │   ├── devops-flow.svg
+│   │   ├── docker-flow.svg
+│   │   ├── monitoring-flow.svg
+│   │   ├── observability-flow.svg
+│   │   ├── platform-ui.svg
+│   │   ├── README.md
+│   │   ├── terraform-flow.svg
+│   │   └── user-application-flow.svg
+│   ├── architecture-flow.md
+│   ├── DEPLOYMENT_CHECKLIST.md
+│   ├── DEPLOYMENT_RUNBOOK.md
+│   ├── MONGODB_ATLAS_SETUP.md
+│   └── MONGODB_DEPLOYMENT.md
 ├── frontend/
+│   ├── api-docs.html
+│   ├── api-keys.html
+│   ├── auth.html
+│   ├── dashboard.html
+│   ├── Dockerfile
+│   ├── index.html
+│   ├── nginx.conf
+│   ├── nr-logo.png
+│   └── settings.html
 ├── helm/
+│   └── cloudplusai/
+│       ├── templates/
+│       │   ├── _helpers.tpl
+│       │   └── backend.yaml
+│       ├── Chart.yaml
+│       └── values.yaml
 ├── infra/
+│   └── terraform/
+│       ├── main.tf
+│       ├── providers.tf
+│       └── variables.tf
 ├── kubernetes/
+│   ├── autoscaling/
+│   │   └── hpa.yaml
+│   ├── monitoring/
+│   │   ├── grafana-secret.yaml
+│   │   ├── grafana.yaml
+│   │   ├── prometheus-config.yaml
+│   │   ├── prometheus.yaml
+│   │   └── servicemonitor.yaml
+│   ├── networking/
+│   │   └── nginx-ingress.yaml
+│   ├── backend.yaml
+│   ├── mongodb.yaml
+│   └── namespace.yaml
 ├── monitoring/
+│   └── prometheus/
+│       └── prometheus.yml
 ├── terraform/
-├── docker-compose.yml
+│   ├── compute.tf
+│   ├── eks.tf
+│   ├── iam.tf
+│   ├── main.tf
+│   ├── network.tf
+│   ├── outputs.tf
+│   ├── README.md
+│   ├── variables.tf
+│   └── versions.tf
+├── .gitignore
 ├── Cloudplus_AI_Complete_Project_Guide.md
+├── docker-compose.yml
 └── README.md
 ```
 <!-- DYNAMIC_STRUCTURE:END -->
@@ -403,14 +473,12 @@ CloudplusAI/
 ## ⚡ Dynamic Live Status
 
 <!-- DYNAMIC_STATUS:START -->
-| Service | Status |
+| Service | Live Status |
 |---|---|
-| 🌐 Frontend | 🟢 Live |
-| 🔄 CI | GitHub Actions |
+| 🌐 Frontend | 🔴 Check failed |
+| 🔄 CI | [![CI](https://img.shields.io/github/actions/workflow/status/nitindrathod4-alt/CloudplusAI/ci.yml?branch=main&style=flat-square)](https://github.com/nitindrathod4-alt/CloudplusAI/actions/workflows/ci.yml) |
 | 🤖 AI Model | `openai/gpt-oss-20b` |
-| 🗄️ Database | MongoDB Atlas |
-| 🔧 Backend | Railway |
-| 🕒 Last verified | 2026-09-21 |
+| 🕒 Last automatic check | 2026-09-20 20:20 UTC |
 <!-- DYNAMIC_STATUS:END -->
 
 ---
