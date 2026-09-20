@@ -162,7 +162,7 @@ Railway Backend
 | 🌐 Frontend | 🔴 Check failed |
 | 🔄 CI | [![CI](https://img.shields.io/github/actions/workflow/status/nitindrathod4-alt/CloudplusAI/ci.yml?branch=main&style=flat-square)](https://github.com/nitindrathod4-alt/CloudplusAI/actions/workflows/ci.yml) |
 | 🤖 AI Model | `openai/gpt-oss-20b` |
-| 🕒 Last automatic check | 2026-09-20 19:45 UTC |
+| 🕒 Last automatic check | 2026-09-20 19:46 UTC |
 <!-- DYNAMIC_STATUS:END -->
 
 > The live-status section is refreshed automatically by GitHub Actions. GitHub badges and the website check update from the repository/live deployment rather than requiring manual README edits.
@@ -350,13 +350,79 @@ Docker Compose provides local orchestration, while Kubernetes/Helm provides the 
 <!-- DYNAMIC_STRUCTURE:START -->
 ```text
 CloudplusAI/
-├── backend/
-├── frontend/
-├── kubernetes/
-├── helm/
-├── terraform/
 ├── .github/
 │   └── workflows/
+│       ├── ci.yml
+│       ├── deploy.yml
+│       ├── devops.yml
+│       └── dynamic-readme.yml
+├── backend/
+│   ├── .env.example
+│   ├── api-v1.js
+│   ├── Dockerfile
+│   ├── features.js
+│   ├── package.json
+│   └── server.js
+├── docs/
+│   ├── images/
+│   │   └── README.md
+│   ├── architecture-flow.md
+│   ├── DEPLOYMENT_CHECKLIST.md
+│   ├── DEPLOYMENT_RUNBOOK.md
+│   ├── MONGODB_ATLAS_SETUP.md
+│   └── MONGODB_DEPLOYMENT.md
+├── frontend/
+│   ├── api-docs.html
+│   ├── api-keys.html
+│   ├── auth.html
+│   ├── dashboard.html
+│   ├── Dockerfile
+│   ├── index.html
+│   ├── nginx.conf
+│   ├── nr-logo.png
+│   ├── settings.html
+│   └── vercel.json
+├── helm/
+│   └── cloudplusai/
+│       ├── templates/
+│       │   ├── _helpers.tpl
+│       │   └── backend.yaml
+│       ├── Chart.yaml
+│       └── values.yaml
+├── infra/
+│   └── terraform/
+│       ├── main.tf
+│       ├── providers.tf
+│       └── variables.tf
+├── kubernetes/
+│   ├── autoscaling/
+│   │   └── hpa.yaml
+│   ├── monitoring/
+│   │   ├── grafana-secret.yaml
+│   │   ├── grafana.yaml
+│   │   ├── prometheus-config.yaml
+│   │   ├── prometheus.yaml
+│   │   └── servicemonitor.yaml
+│   ├── networking/
+│   │   └── nginx-ingress.yaml
+│   ├── backend.yaml
+│   ├── mongodb.yaml
+│   └── namespace.yaml
+├── monitoring/
+│   └── prometheus/
+│       └── prometheus.yml
+├── terraform/
+│   ├── compute.tf
+│   ├── eks.tf
+│   ├── iam.tf
+│   ├── main.tf
+│   ├── network.tf
+│   ├── outputs.tf
+│   ├── README.md
+│   ├── variables.tf
+│   └── versions.tf
+├── .gitignore
+├── Cloudplus_AI_Complete_Project_Guide.md
 ├── docker-compose.yml
 └── README.md
 ```
