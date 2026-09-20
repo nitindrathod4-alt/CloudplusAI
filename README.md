@@ -40,38 +40,24 @@
 
 ### 🔁 User → Application Flow
 
+<!-- DYNAMIC_USER_FLOW:START -->
 ```text
-┌──────────────┐
-│ 👤 User      │
-└──────┬───────┘
-       │ Login / Chat / API Request
-       ▼
-┌──────────────────┐
-│ 🖥️ CloudplusAI UI│
-└────────┬─────────┘
-         ▼
-┌──────────────────┐
-│ 🔐 Auth / API Key│
-└────────┬─────────┘
-         ▼
-┌──────────────────┐
-│ 🛡️ Rate Limiter  │
-│ Request Validation│
-└────────┬─────────┘
-         ▼
-┌──────────────────┐
-│ ⚙️ Express API   │
-└───────┬─────┬────┘
-        │     │
-        ▼     ▼
-   ┌────────┐ ┌─────────────┐
-   │MongoDB │ │ 🤖 AI Model │
-   └────────┘ └─────────────┘
-        │          │
-        └────┬─────┘
-             ▼
-       📊 Analytics
+👤 User
+   ↓
+🖥️ CloudplusAI UI
+   ↓
+🔐 Authentication / API Key
+   ↓
+🛡️ Rate Limiter + Request Validation
+   ↓
+⚙️ Express API
+   ├──→ 🗄️ MongoDB
+   ├──→ 🤖 AI Provider
+   └──→ 📊 Analytics
+<!-- DYNAMIC_USER_FLOW:END -->
 ```
+
+> This flow is generated automatically from the application routes and backend/frontend configuration.
 
 ### 🚀 DevOps Digital Flow
 
