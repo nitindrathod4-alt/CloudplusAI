@@ -61,37 +61,11 @@
 
 ### 🚀 DevOps Digital Flow
 
-```text
-┌──────────┐    ┌──────────┐    ┌────────────────┐
-│ Developer│───▶│  GitHub  │───▶│ GitHub Actions │
-└──────────┘    └──────────┘    └───────┬────────┘
-                                        │
-                         ┌──────────────┼──────────────┐
-                         ▼              ▼              ▼
-                    🧪 Tests       🔍 SonarQube    🛡️ Trivy
-                         │              │              │
-                         └──────────────┼──────────────┘
-                                        ▼
-                                  🐳 Docker Build
-                                        │
-                                        ▼
-                                  📦 Amazon ECR
-                                        │
-                                        ▼
-                              ☸️ Amazon EKS Cluster
-                                        │
-                              ┌─────────┴─────────┐
-                              ▼                   ▼
-                         Nginx/Ingress         Helm
-                              │                   │
-                              └─────────┬─────────┘
-                                        ▼
-                              ☁️ CloudplusAI App
-                                        │
-                         ┌──────────────┼──────────────┐
-                         ▼              ▼              ▼
-                    Prometheus       Grafana       CloudWatch
-```
+<p align="center">
+  <img src="docs/images/devops-flow.svg" alt="Animated CloudplusAI AWS DevOps flow" width="100%">
+</p>
+
+> 🔥 Animated architecture: GitHub → Jenkins / GitHub Actions → Docker → Kubernetes/EKS → Flux CD → AWS services. The flow uses moving glowing lines so it feels like a running video.
 
 ### 📈 Monitoring Flow
 
