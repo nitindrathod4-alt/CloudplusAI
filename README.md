@@ -65,10 +65,10 @@ The active AI model is controlled by the backend `GROQ_MODEL` environment variab
 <!-- DYNAMIC_STATUS:START -->
 | Service | Live Status |
 |---|---|
-| 🌐 Frontend | 🔴 Check failed |
+| 🌐 Frontend | 🟢 Online |
 | 🔄 CI | [![CI](https://img.shields.io/github/actions/workflow/status/nitindrathod4-alt/CloudplusAI/ci.yml?branch=main&style=flat-square)](https://github.com/nitindrathod4-alt/CloudplusAI/actions/workflows/ci.yml) |
 | 🤖 AI Model | `openai/gpt-oss-20b` |
-| 🕒 Last automatic check | 2026-09-23 06:33 UTC |
+| 🕒 Last automatic check | 2026-09-23 07:12 UTC |
 <!-- DYNAMIC_STATUS:END -->
 
 > The live-status section is refreshed automatically by GitHub Actions. GitHub badges and the website check update from the repository/live deployment rather than requiring manual README edits.
@@ -172,6 +172,8 @@ CloudplusAI/
 │       ├── deploy.yml
 │       ├── devops.yml
 │       └── dynamic-readme.yml
+├── api/
+│   └── index.js
 ├── backend/
 │   ├── .env.example
 │   ├── api-v1.js
