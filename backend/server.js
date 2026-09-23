@@ -1,6 +1,27 @@
 require("dotenv").config();
 const express=require("express"),cors=require("cors"),axios=require("axios"),mongoose=require("mongoose"),bcrypt=require("bcryptjs"),jwt=require("jsonwebtoken"),crypto=require("crypto");
 const app=express(); app.use(cors()); app.use(express.json());
+
+let dbConnectionPromise=null;
+async function connectDB(){
+  if(!process.env.MONGODB_URI) return;
+  if(mongoose.connection.readyState===1) return;
+  if(!dbConnectionPromise){
+    dbConnectionPromise=mongoose.connect(process.env.MONGODB_URI)
+      .then(()=>console.log("CloudplusAI MongoDB connected"))
+      .catch(err=>{ dbConnectionPromise=null; throw err; });
+  }
+  return dbConnectionPromise;
+}
+app.use(async(req,res,next)=>{
+  try{
+    await connectDB();
+    next();
+  }catch(e){
+    console.error("MongoDB connection failed:",e.message);
+    res.status(503).json({message:"Database connection failed."});
+  }
+});
 const PORT=process.env.PORT||5000, JWT_SECRET=process.env.JWT_SECRET||"change-this-secret-in-production";
 const userSchema=new mongoose.Schema({name:{type:String,required:true,trim:true},email:{type:String,required:true,unique:true,lowercase:true,trim:true},password:{type:String,required:true},createdAt:{type:Date,default:Date.now},lastActiveAt:{type:Date,default:Date.now}});
 const messageSchema=new mongoose.Schema({userId:{type:mongoose.Schema.Types.ObjectId,ref:"User",required:true},conversationId:{type:mongoose.Schema.Types.ObjectId,ref:"Conversation",required:true},role:{type:String,enum:["user","assistant"],required:true},content:{type:String,required:true},createdAt:{type:Date,default:Date.now}});
@@ -896,4 +917,10 @@ app.post("/api/ai",auth,async(req,res)=>{
     res.status(500).json({reply:"AI connection failed."});
   }
 });
-async function start(){if(process.env.MONGODB_URI){try{await mongoose.connect(process.env.MONGODB_URI);console.log("CloudplusAI MongoDB connected")}catch(e){console.error("MongoDB connection failed:",e.message)}}else console.warn("MONGODB_URI is not configured; persistence is disabled.");app.listen(PORT,"0.0.0.0",()=>console.log(`CloudplusAI backend running on port ${PORT}`))} start();
+async function start(){
+  await connectDB();
+  if(!process.env.MONGODB_URI) console.warn("MONGODB_URI is not configured; persistence is disabled.");
+  app.listen(PORT,"0.0.0.0",()=>console.log(`CloudplusAI backend running on port ${PORT}`));
+}
+if(require.main===module) start();
+module.exports=app;
