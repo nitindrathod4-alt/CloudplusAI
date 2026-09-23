@@ -2,15 +2,33 @@ require("dotenv").config();
 const express=require("express"),cors=require("cors"),axios=require("axios"),mongoose=require("mongoose"),bcrypt=require("bcryptjs"),jwt=require("jsonwebtoken"),crypto=require("crypto");
 const app=express(); app.use(cors()); app.use(express.json());
 
-let dbConnectionPromise=null;
-async function connectDB(){
-  if(!process.env.MONGODB_URI) return;
-  if(mongoose.connection.readyState===1) return;
-  if(!dbConnectionPromise){
-    dbConnectionPromise=mongoose.connect(process.env.MONGODB_URI)
-      .then(()=>console.log("CloudplusAI MongoDB connected"))
-      .catch(err=>{ dbConnectionPromise=null; throw err; });
+let dbConnectionPromise = null;
+
+async function connectDB() {
+  if (!process.env.MONGODB_URI) {
+    throw new Error("MONGODB_URI is not configured");
   }
+
+  if (mongoose.connection.readyState === 1) {
+    return;
+  }
+
+  if (!dbConnectionPromise) {
+    dbConnectionPromise = mongoose.connect(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 10000,
+      connectTimeoutMS: 10000
+    })
+    .then(() => {
+      console.log("CloudplusAI MongoDB connected");
+      return true;
+    })
+    .catch((err) => {
+      dbConnectionPromise = null;
+      console.error("MONGODB ERROR:", err.name, err.message, err.code || "N/A");
+      throw err;
+    });
+  }
+
   return dbConnectionPromise;
 }
 app.use(async(req,res,next)=>{
@@ -924,3 +942,4 @@ async function start(){
 }
 if(require.main===module) start();
 module.exports=app;
+
